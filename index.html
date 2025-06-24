@@ -23,18 +23,30 @@
             color: #333;
             margin-bottom: 30px;
         }
-        .controls {
-            margin-bottom: 20px;
-            display: flex;
-            gap: 10px;
-            align-items: center;
+        .header-section {
+            margin-bottom: 30px;
+        }
+        .search-container {
+            margin-bottom: 15px;
         }
         .search-box {
-            flex: 1;
-            padding: 8px 12px;
+            width: 100%;
+            max-width: 400px;
+            padding: 10px 14px;
             border: 1px solid #ddd;
-            border-radius: 4px;
+            border-radius: 6px;
             font-size: 14px;
+            background-color: #fafafa;
+        }
+        .search-box:focus {
+            outline: none;
+            border-color: #007bff;
+            background-color: white;
+            box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+        }
+        .action-container {
+            display: flex;
+            justify-content: flex-end;
         }
         .btn {
             padding: 8px 16px;
@@ -172,9 +184,13 @@
     <div class="container">
         <h1>パスワード管理</h1>
         
-        <div class="controls">
-            <input type="text" class="search-box" id="searchBox" placeholder="エントリ名で検索...">
-            <button class="btn btn-primary" id="addBtn">新規追加</button>
+        <div class="header-section">
+            <div class="search-container">
+                <input type="text" class="search-box" id="searchBox" placeholder="エントリ名で検索...">
+            </div>
+            <div class="action-container">
+                <button class="btn btn-primary" id="addBtn">+ 新規パスワード追加</button>
+            </div>
         </div>
 
         <div id="passwordTableContainer">
