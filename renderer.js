@@ -28,9 +28,21 @@ async function init() {
 // パスワードリストの表示
 function renderPasswordList() {
     const searchTerm = searchBox.value.toLowerCase();
-    const filteredPasswords = passwords.filter(p => 
+    let filteredPasswords = passwords.filter(p => 
         p.entryName.toLowerCase().includes(searchTerm)
     );
+
+    // エントリ名が重複している場合は最新のもののみを表示
+    const uniquePasswords = new Map();
+    filteredPasswords.forEach(password => {
+        const key = password.entryName.toLowerCase();
+        if (!uniquePasswords.has(key) || 
+            new Date(password.updatedAt) > new Date(uniquePasswords.get(key).updatedAt)) {
+            uniquePasswords.set(key, password);
+        }
+    });
+    
+    filteredPasswords = Array.from(uniquePasswords.values());
 
     if (filteredPasswords.length === 0) {
         passwordTable.classList.add('hidden');
@@ -111,13 +123,16 @@ async function copyPassword(id, buttonElement) {
 // パスワードの更新
 function updatePassword(id) {
     const password = passwords.find(p => p.id === id);
-    const newPassword = generatePassword();
+    editingId = 'update-' + id;
     
-    if (confirm(`${password.entryName}のパスワードを更新しますか？\n\n新しいパスワード: ${newPassword}`)) {
-        password.password = newPassword;
-        password.updatedAt = new Date().toISOString();
-        savePasswords();
-    }
+    modalTitle.textContent = 'パスワード更新';
+    entryNameInput.value = password.entryName;
+    entryNameInput.disabled = true;
+    usernameInput.value = password.username;
+    usernameInput.disabled = true;
+    passwordInput.value = generatePassword();
+    
+    showModal();
 };
 
 // パスワードの編集
@@ -127,7 +142,9 @@ function editPassword(id) {
     
     modalTitle.textContent = 'パスワード編集';
     entryNameInput.value = password.entryName;
+    entryNameInput.disabled = false;
     usernameInput.value = password.username;
+    usernameInput.disabled = false;
     passwordInput.value = password.password;
     
     showModal();
@@ -162,6 +179,8 @@ function showModal() {
 function hideModal() {
     modal.style.display = 'none';
     passwordForm.reset();
+    entryNameInput.disabled = false;
+    usernameInput.disabled = false;
     editingId = null;
 }
 
@@ -177,6 +196,8 @@ searchBox.addEventListener('input', renderPasswordList);
 addBtn.addEventListener('click', () => {
     editingId = null;
     modalTitle.textContent = '新規パスワード';
+    entryNameInput.disabled = false;
+    usernameInput.disabled = false;
     showModal();
 });
 
@@ -224,10 +245,16 @@ passwordForm.addEventListener('submit', async (e) => {
         updatedAt: new Date().toISOString()
     };
     
-    if (editingId) {
+    if (editingId && editingId.startsWith('update-')) {
+        // 更新の場合は新しいエントリとして追加
+        data.id = Date.now().toString();
+        passwords.push(data);
+    } else if (editingId) {
+        // 編集の場合は既存のエントリを更新
         const index = passwords.findIndex(p => p.id === editingId);
         passwords[index] = { ...passwords[index], ...data };
     } else {
+        // 新規の場合は新しいエントリとして追加
         data.id = Date.now().toString();
         passwords.push(data);
     }
