@@ -1,0 +1,20 @@
+{
+  "name": "20250625_0152",
+  "version": "1.0.0",
+  "description": "作成日：2025-06-25 01:52",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "jest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@testing-library/jest-dom": "^6.6.3",
+    "electron": "^37.0.0",
+    "jest": "^30.0.2",
+    "jest-environment-jsdom": "^30.0.2",
+    "jsdom": "^26.1.0"
+  }
+}
