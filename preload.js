@@ -8,10 +8,6 @@ contextBridge.exposeInMainWorld('electronAPI', {
   // フォルダーを開くAPI
   openPasswordFolder: () => ipcRenderer.invoke('open-password-folder'),
   
-  // 設定ウィンドウAPI
-  openSettingsWindow: () => ipcRenderer.invoke('open-settings'),
-  closeSettingsWindow: () => ipcRenderer.invoke('close-settings'),
-  
   // クリップボードAPI
   copyToClipboard: (text) => {
     return navigator.clipboard.writeText(text);

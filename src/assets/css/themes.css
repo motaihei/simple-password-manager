@@ -1,0 +1,153 @@
+/* ダークモードテーマスタイル */
+body.dark-mode {
+    background-color: #1a1a1a;
+    color: #e0e0e0;
+}
+
+body.dark-mode .container {
+    background-color: #2a2a2a;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+body.dark-mode h1 {
+    color: #e0e0e0;
+}
+
+body.dark-mode .theme-toggle,
+body.dark-mode .settings-toggle {
+    background-color: #3a3a3a;
+    border-color: #4a4a4a;
+    color: #e0e0e0;
+}
+
+body.dark-mode .theme-toggle:hover,
+body.dark-mode .settings-toggle:hover {
+    background-color: #4a4a4a;
+    border-color: #5a5a5a;
+}
+
+body.dark-mode .search-box {
+    background-color: #3a3a3a;
+    border-color: #4a4a4a;
+    color: #e0e0e0;
+}
+
+body.dark-mode .search-box:focus {
+    background-color: #2a2a2a;
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 2px rgba(13, 110, 253, 0.25);
+}
+
+body.dark-mode th {
+    background-color: #3a3a3a;
+    color: #b0b0b0;
+}
+
+body.dark-mode td {
+    border-color: #3a3a3a;
+}
+
+body.dark-mode tr:hover {
+    background-color: #3a3a3a;
+}
+
+body.dark-mode .btn-primary {
+    background-color: #0d6efd;
+}
+
+body.dark-mode .btn-primary:hover {
+    background-color: #0b5ed7;
+}
+
+body.dark-mode .btn-secondary {
+    background-color: #5a6268;
+}
+
+body.dark-mode .btn-secondary:hover {
+    background-color: #4e555b;
+}
+
+body.dark-mode .modal-content {
+    background-color: #2a2a2a;
+    color: #e0e0e0;
+}
+
+body.dark-mode .modal h2 {
+    color: #e0e0e0;
+}
+
+body.dark-mode .form-group label {
+    color: #b0b0b0;
+}
+
+body.dark-mode .form-group input {
+    background-color: #3a3a3a;
+    border-color: #4a4a4a;
+    color: #e0e0e0;
+}
+
+body.dark-mode .password-settings {
+    background-color: #3a3a3a;
+}
+
+body.dark-mode .password-settings h4 {
+    color: #b0b0b0;
+}
+
+body.dark-mode .length-input {
+    background-color: #2a2a2a;
+    border-color: #4a4a4a;
+    color: #e0e0e0;
+}
+
+body.dark-mode .empty-state {
+    color: #8a8a8a;
+}
+
+body.dark-mode .close {
+    color: #8a8a8a;
+}
+
+body.dark-mode .close:hover {
+    color: #e0e0e0;
+}
+
+body.dark-mode #detailContent p {
+    color: #e0e0e0;
+}
+
+body.dark-mode #detailContent label {
+    color: #b0b0b0;
+}
+
+body.dark-mode #detailUpdatedAt {
+    color: #8a8a8a !important;
+}
+
+/* ダークモード用ツールチップスタイル */
+body.dark-mode .tooltip-container::before {
+    background-color: #4a4a4a;
+    color: #e0e0e0;
+}
+
+body.dark-mode .tooltip-container::after {
+    border-bottom-color: #4a4a4a;
+}
+
+/* 設定モーダル用ダークモードスタイル */
+body.dark-mode .setting-section {
+    background-color: #3a3a3a;
+    border-color: #4a4a4a;
+}
+
+body.dark-mode .setting-section h3 {
+    color: #b0b0b0 !important;
+}
+
+body.dark-mode .setting-label {
+    color: #b0b0b0;
+}
+
+body.dark-mode .setting-description {
+    color: #8a8a8a;
+}

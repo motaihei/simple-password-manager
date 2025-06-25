@@ -3,7 +3,6 @@ const path = require('path');
 const fs = require('fs').promises;
 
 let mainWindow = null;
-let settingsWindow = null;
 
 const createWindow = () => {
   mainWindow = new BrowserWindow({
@@ -22,40 +21,6 @@ const createWindow = () => {
   mainWindow.loadFile('index.html');
 };
 
-const createSettingsWindow = () => {
-  if (settingsWindow) {
-    settingsWindow.focus();
-    return;
-  }
-
-  settingsWindow = new BrowserWindow({
-    width: 500,
-    height: 350,
-    resizable: false,
-    modal: true,
-    parent: mainWindow,
-    center: true,
-    show: false,
-    autoHideMenuBar: true,
-    icon: path.join(__dirname, 'assets', 'icons', 'icon.ico'),
-    webPreferences: {
-      preload: path.join(__dirname, 'preload.js'),
-      contextIsolation: true,
-      enableRemoteModule: false,
-      nodeIntegration: false
-    }
-  });
-
-  settingsWindow.loadFile('settings.html');
-  
-  settingsWindow.once('ready-to-show', () => {
-    settingsWindow.show();
-  });
-  
-  settingsWindow.on('closed', () => {
-    settingsWindow = null;
-  });
-};
 
 app.whenReady().then(() => {
   // アプリケーションメニューを無効化
@@ -64,7 +29,7 @@ app.whenReady().then(() => {
   createWindow();
   
   // IPCハンドラー登録の確認ログ
-  console.log('IPCハンドラーが登録されました: load-passwords, save-passwords, open-password-folder, open-settings, close-settings');
+  console.log('IPCハンドラーが登録されました: load-passwords, save-passwords, open-password-folder');
 
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
@@ -116,18 +81,4 @@ ipcMain.handle('open-password-folder', async () => {
     console.error('Error opening folder:', error);
     return { success: false, error: error.message };
   }
-});
-
-// 設定ウィンドウを開く
-ipcMain.handle('open-settings', () => {
-  createSettingsWindow();
-  return { success: true };
-});
-
-// 設定ウィンドウを閉じる
-ipcMain.handle('close-settings', () => {
-  if (settingsWindow) {
-    settingsWindow.close();
-  }
-  return { success: true };
 });

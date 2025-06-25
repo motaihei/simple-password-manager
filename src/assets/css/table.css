@@ -1,0 +1,50 @@
+/* テーブル関連スタイル */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th,
+td {
+    padding: 8px 6px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    font-size: 13px;
+    vertical-align: middle;
+    height: 48px;
+}
+
+th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+    color: #495057;
+    text-align: left;
+}
+
+th:nth-child(3) {
+    text-align: center;
+}
+
+tr:hover {
+    background-color: #f8f9fa;
+}
+
+.password-cell {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.copy-password-btn {
+    flex-shrink: 0;
+    min-width: 80px;
+    padding: 6px 12px;
+    font-size: 13px;
+    font-weight: 500;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
