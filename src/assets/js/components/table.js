@@ -57,6 +57,14 @@ class TableManager {
                         <button class="btn btn-secondary btn-sm copy-password-btn" data-action="copy" data-id="${password.id}">📋 コピー</button>
                     </div>
                 </td>
+                <td>
+                    <button class="btn btn-secondary btn-sm${password.url ? '' : ' disabled'}" 
+                            data-action="open-url" 
+                            data-id="${password.id}" 
+                            ${password.url ? '' : 'disabled'}>
+                        🔗 開く
+                    </button>
+                </td>
                 <td>${formatDateTime(password.updatedAt)}</td>
                 <td></td>
             </tr>

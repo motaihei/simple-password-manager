@@ -11,6 +11,7 @@ class ModalManager {
         this.passwordForm = document.getElementById('passwordForm');
         this.entryNameInput = document.getElementById('entryName');
         this.usernameInput = document.getElementById('username');
+        this.urlInput = document.getElementById('url');
         this.passwordInput = document.getElementById('password');
         this.generateBtn = document.getElementById('generateBtn');
         
@@ -19,6 +20,7 @@ class ModalManager {
         this.detailEntryName = document.getElementById('detailEntryName');
         this.detailUsername = document.getElementById('detailUsername');
         this.detailPassword = document.getElementById('detailPassword');
+        this.detailUrl = document.getElementById('detailUrl');
         this.detailUpdatedAt = document.getElementById('detailUpdatedAt');
         this.detailToggleBtn = document.getElementById('detailToggleBtn');
         this.detailCopyBtn = document.getElementById('detailCopyBtn');
@@ -74,6 +76,7 @@ class ModalManager {
         this.passwordForm.reset();
         this.entryNameInput.disabled = false;
         this.usernameInput.disabled = false;
+        this.urlInput.disabled = false;
         this.editingId = null;
     }
     
@@ -86,6 +89,9 @@ class ModalManager {
         this.isPasswordVisible = false;
         this.detailPassword.textContent = '••••••••';
         this.detailToggleBtn.textContent = '👁️ 表示';
+        
+        // URLの表示
+        this.detailUrl.textContent = password.url || '未設定';
         
         this.detailUpdatedAt.textContent = password.updatedAt;
         
@@ -150,6 +156,8 @@ class ModalManager {
         this.entryNameInput.disabled = true;
         this.usernameInput.value = password.username;
         this.usernameInput.disabled = true;
+        this.urlInput.value = password.url || '';
+        this.urlInput.disabled = true;
         const settings = getPasswordGenerationSettings();
         this.passwordInput.value = generatePassword(settings.charType, settings.length);
         this.showMainModal();
@@ -162,6 +170,8 @@ class ModalManager {
         this.entryNameInput.disabled = false;
         this.usernameInput.value = password.username;
         this.usernameInput.disabled = false;
+        this.urlInput.value = password.url || '';
+        this.urlInput.disabled = false;
         this.passwordInput.value = password.password;
         this.showMainModal();
     }

@@ -29,7 +29,7 @@ app.whenReady().then(() => {
   createWindow();
   
   // IPCハンドラー登録の確認ログ
-  console.log('IPCハンドラーが登録されました: load-passwords, save-passwords, open-password-folder');
+  console.log('IPCハンドラーが登録されました: load-passwords, save-passwords, open-password-folder, open-url');
 
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
@@ -79,6 +79,19 @@ ipcMain.handle('open-password-folder', async () => {
     return { success: true };
   } catch (error) {
     console.error('Error opening folder:', error);
+    return { success: false, error: error.message };
+  }
+});
+
+// URLをデフォルトブラウザで開く
+ipcMain.handle('open-url', async (event, url) => {
+  console.log('open-url ハンドラーが呼び出されました:', url);
+  try {
+    await shell.openExternal(url);
+    console.log('URLを正常に開きました:', url);
+    return { success: true };
+  } catch (error) {
+    console.error('Error opening URL:', error);
     return { success: false, error: error.message };
   }
 });

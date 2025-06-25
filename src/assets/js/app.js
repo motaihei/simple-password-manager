@@ -68,6 +68,7 @@ class PasswordManagerApp {
         const data = {
             entryName: this.modalManager.entryNameInput.value,
             username: this.modalManager.usernameInput.value,
+            url: this.modalManager.urlInput.value || null,
             password: this.modalManager.passwordInput.value,
             updatedAt: new Date().toISOString()
         };
@@ -118,6 +119,13 @@ class PasswordManagerApp {
             return;
         }
         
+        if (button && button.dataset.action === 'open-url') {
+            // URLを開くボタンの処理
+            e.stopPropagation();
+            this.handleOpenUrl(button.dataset.id);
+            return;
+        }
+        
         // 行クリックで詳細モーダルを表示
         const row = e.target.closest('tr');
         if (row && row.dataset.id) {
@@ -160,6 +168,17 @@ class PasswordManagerApp {
         if (confirm(`${password.entryName}を削除しますか？`)) {
             this.passwords = this.passwords.filter(p => p.id !== id);
             this.savePasswordsAndRefresh();
+        }
+    }
+    
+    async handleOpenUrl(id) {
+        const password = this.passwords.find(p => p.id === id);
+        if (password && password.url) {
+            try {
+                await window.electronAPI.openUrl(password.url);
+            } catch (error) {
+                console.error('Error opening URL:', error);
+            }
         }
     }
     

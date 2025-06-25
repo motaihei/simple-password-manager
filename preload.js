@@ -8,6 +8,9 @@ contextBridge.exposeInMainWorld('electronAPI', {
   // フォルダーを開くAPI
   openPasswordFolder: () => ipcRenderer.invoke('open-password-folder'),
   
+  // URLを開くAPI
+  openUrl: (url) => ipcRenderer.invoke('open-url', url),
+  
   // クリップボードAPI
   copyToClipboard: (text) => {
     return navigator.clipboard.writeText(text);
