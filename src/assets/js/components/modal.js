@@ -23,7 +23,6 @@ class ModalManager {
         this.detailUrl = document.getElementById('detailUrl');
         this.detailUpdatedAt = document.getElementById('detailUpdatedAt');
         this.detailToggleBtn = document.getElementById('detailToggleBtn');
-        this.detailCopyBtn = document.getElementById('detailCopyBtn');
         this.detailUpdateBtn = document.getElementById('detailUpdateBtn');
         this.detailEditBtn = document.getElementById('detailEditBtn');
         this.detailDeleteBtn = document.getElementById('detailDeleteBtn');
@@ -97,7 +96,6 @@ class ModalManager {
         
         // ボタンにIDを保存
         this.detailToggleBtn.dataset.id = password.id;
-        this.detailCopyBtn.dataset.id = password.id;
         this.detailUpdateBtn.dataset.id = password.id;
         this.detailEditBtn.dataset.id = password.id;
         this.detailDeleteBtn.dataset.id = password.id;

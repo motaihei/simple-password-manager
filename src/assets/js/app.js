@@ -53,7 +53,6 @@ class PasswordManagerApp {
         this.passwordList.addEventListener('click', (e) => this.handleTableClick(e));
         
         // 詳細モーダルのボタンイベント
-        this.modalManager.detailCopyBtn.addEventListener('click', () => this.handleDetailCopy());
         this.modalManager.detailUpdateBtn.addEventListener('click', () => this.handleDetailUpdate());
         this.modalManager.detailEditBtn.addEventListener('click', () => this.handleDetailEdit());
         this.modalManager.detailDeleteBtn.addEventListener('click', () => this.handleDetailDelete());
@@ -141,10 +140,6 @@ class PasswordManagerApp {
         }
     }
     
-    async handleDetailCopy() {
-        const id = this.modalManager.detailCopyBtn.dataset.id;
-        await copyPassword(id, this.modalManager.detailCopyBtn, this.passwords);
-    }
     
     handleDetailUpdate() {
         const id = this.modalManager.detailUpdateBtn.dataset.id;
