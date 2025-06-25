@@ -2,10 +2,11 @@ const { app, BrowserWindow, ipcMain, shell } = require('electron');
 const path = require('path');
 const fs = require('fs').promises;
 
+let mainWindow = null;
 let settingsWindow = null;
 
 const createWindow = () => {
-  const mainWindow = new BrowserWindow({
+  mainWindow = new BrowserWindow({
     width: 600,
     height: 1067,
     icon: path.join(__dirname, 'assets', 'icons', 'icon.ico'), // Windowsアイコン
@@ -28,8 +29,12 @@ const createSettingsWindow = () => {
 
   settingsWindow = new BrowserWindow({
     width: 500,
-    height: 400,
+    height: 350,
     resizable: false,
+    modal: true,
+    parent: mainWindow,
+    center: true,
+    show: false,
     icon: path.join(__dirname, 'assets', 'icons', 'icon.ico'),
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
@@ -40,6 +45,10 @@ const createSettingsWindow = () => {
   });
 
   settingsWindow.loadFile('settings.html');
+  
+  settingsWindow.once('ready-to-show', () => {
+    settingsWindow.show();
+  });
   
   settingsWindow.on('closed', () => {
     settingsWindow = null;
