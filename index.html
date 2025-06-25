@@ -22,11 +22,29 @@
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             min-height: calc(100vh - 40px);
         }
+        .title-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
         h1 {
             color: #333;
-            margin-bottom: 20px;
+            margin: 0;
             font-size: 24px;
-            text-align: center;
+        }
+        .theme-toggle {
+            background: none;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 8px 12px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.2s;
+        }
+        .theme-toggle:hover {
+            background-color: #f0f0f0;
+            border-color: #bbb;
         }
         .header-section {
             margin-bottom: 20px;
@@ -51,7 +69,7 @@
         }
         .action-container {
             display: flex;
-            justify-content: center;
+            justify-content: flex-end;
             margin-top: 10px;
         }
         .btn {
@@ -192,16 +210,147 @@
         .generate-btn {
             margin-top: 5px;
         }
+        .password-settings {
+            margin-top: 10px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+            font-size: 13px;
+        }
+        .password-settings h4 {
+            margin: 0 0 10px 0;
+            font-size: 14px;
+            color: #495057;
+        }
+        .setting-row {
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .setting-row label {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            margin: 0;
+            white-space: nowrap;
+        }
+        .setting-row input[type="radio"] {
+            margin-right: 5px;
+            margin-top: 0;
+        }
+        .length-input {
+            width: 60px;
+            padding: 4px 8px;
+            margin-left: 5px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            font-size: 13px;
+        }
         .empty-state {
             text-align: center;
             padding: 60px 20px;
             color: #6c757d;
         }
+        
+        /* ダークモードスタイル */
+        body.dark-mode {
+            background-color: #1a1a1a;
+            color: #e0e0e0;
+        }
+        body.dark-mode .container {
+            background-color: #2a2a2a;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+        body.dark-mode h1 {
+            color: #e0e0e0;
+        }
+        body.dark-mode .theme-toggle {
+            background-color: #3a3a3a;
+            border-color: #4a4a4a;
+            color: #e0e0e0;
+        }
+        body.dark-mode .theme-toggle:hover {
+            background-color: #4a4a4a;
+            border-color: #5a5a5a;
+        }
+        body.dark-mode .search-box {
+            background-color: #3a3a3a;
+            border-color: #4a4a4a;
+            color: #e0e0e0;
+        }
+        body.dark-mode .search-box:focus {
+            background-color: #2a2a2a;
+            border-color: #0d6efd;
+            box-shadow: 0 0 0 2px rgba(13, 110, 253, 0.25);
+        }
+        body.dark-mode th {
+            background-color: #3a3a3a;
+            color: #b0b0b0;
+        }
+        body.dark-mode td {
+            border-color: #3a3a3a;
+        }
+        body.dark-mode tr:hover {
+            background-color: #3a3a3a;
+        }
+        body.dark-mode .btn-primary {
+            background-color: #0d6efd;
+        }
+        body.dark-mode .btn-primary:hover {
+            background-color: #0b5ed7;
+        }
+        body.dark-mode .btn-secondary {
+            background-color: #5a6268;
+        }
+        body.dark-mode .btn-secondary:hover {
+            background-color: #4e555b;
+        }
+        body.dark-mode .modal-content {
+            background-color: #2a2a2a;
+            color: #e0e0e0;
+        }
+        body.dark-mode .modal h2 {
+            color: #e0e0e0;
+        }
+        body.dark-mode .form-group label {
+            color: #b0b0b0;
+        }
+        body.dark-mode .form-group input {
+            background-color: #3a3a3a;
+            border-color: #4a4a4a;
+            color: #e0e0e0;
+        }
+        body.dark-mode .password-settings {
+            background-color: #3a3a3a;
+        }
+        body.dark-mode .password-settings h4 {
+            color: #b0b0b0;
+        }
+        body.dark-mode .length-input {
+            background-color: #2a2a2a;
+            border-color: #4a4a4a;
+            color: #e0e0e0;
+        }
+        body.dark-mode .empty-state {
+            color: #8a8a8a;
+        }
+        body.dark-mode .close {
+            color: #8a8a8a;
+        }
+        body.dark-mode .close:hover {
+            color: #e0e0e0;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>パスワード管理</h1>
+        <div class="title-bar">
+            <h1>パスワード管理</h1>
+            <button class="theme-toggle" id="themeToggle" title="テーマ切り替え">
+                <span class="theme-icon">🌙</span>
+            </button>
+        </div>
         
         <div class="header-section">
             <div class="search-container">
@@ -252,6 +401,22 @@
                     <label for="password">パスワード</label>
                     <input type="text" id="password" required>
                     <button type="button" class="btn btn-secondary btn-sm generate-btn" id="generateBtn">ランダム生成</button>
+                    <div class="password-settings" id="passwordSettings">
+                        <h4>生成設定</h4>
+                        <div class="setting-row">
+                            <label>
+                                <input type="radio" name="charType" value="alphanumeric" checked>
+                                半角英数字のみ
+                            </label>
+                            <label>
+                                <input type="radio" name="charType" value="withSymbols">
+                                記号あり
+                            </label>
+                        </div>
+                        <div class="setting-row">
+                            <label>桁数: <input type="number" id="passwordLength" min="4" max="64" value="8" class="length-input"></label>
+                        </div>
+                    </div>
                 </div>
                 <div class="form-actions">
                     <button type="button" class="btn btn-secondary" id="cancelBtn">キャンセル</button>

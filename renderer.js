@@ -18,11 +18,20 @@ const entryNameInput = document.getElementById('entryName');
 const usernameInput = document.getElementById('username');
 const passwordInput = document.getElementById('password');
 const generateBtn = document.getElementById('generateBtn');
+const themeToggle = document.getElementById('themeToggle');
+const themeIcon = document.querySelector('.theme-icon');
 
 // 初期化
 async function init() {
     passwords = await window.electronAPI.loadPasswords();
     renderPasswordList();
+    
+    // ダークモード設定の復元
+    const darkMode = localStorage.getItem('darkMode') === 'true';
+    if (darkMode) {
+        document.body.classList.add('dark-mode');
+        themeIcon.textContent = '☀️';
+    }
 }
 
 // パスワードリストの表示
@@ -60,7 +69,6 @@ function renderPasswordList() {
             <td>
                 <div class="password-cell">
                     <span class="password-text" data-id="${password.id}" data-hidden="true">••••••••</span>
-                    <button class="btn btn-secondary btn-sm" data-action="toggle" data-id="${password.id}">表示</button>
                     <button class="btn btn-secondary btn-sm" data-action="copy" data-id="${password.id}">📋</button>
                 </div>
             </td>
@@ -111,22 +119,6 @@ function formatDateTime(dateString) {
     }
 }
 
-// パスワードの表示/非表示切り替え
-function togglePassword(id) {
-    const password = passwords.find(p => p.id === id);
-    const element = document.querySelector(`.password-text[data-id="${id}"]`);
-    const button = element.nextElementSibling;
-    
-    if (element.dataset.hidden === 'true') {
-        element.textContent = password.password;
-        element.dataset.hidden = 'false';
-        button.textContent = '非表示';
-    } else {
-        element.textContent = '••••••••';
-        element.dataset.hidden = 'true';
-        button.textContent = '表示';
-    }
-};
 
 // パスワードをクリップボードにコピー
 async function copyPassword(id, buttonElement) {
@@ -192,9 +184,19 @@ function deletePassword(id) {
 
 // パスワード生成
 function generatePassword() {
-    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+-=[]{}|;:,.<>?';
+    // 生成設定を取得
+    const charType = document.querySelector('input[name="charType"]:checked')?.value || 'alphanumeric';
+    const length = parseInt(document.getElementById('passwordLength')?.value) || 8;
+    
+    let chars;
+    if (charType === 'alphanumeric') {
+        chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    } else {
+        chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+-=[]{}|;:,.<>?';
+    }
+    
     let password = '';
-    for (let i = 0; i < 16; i++) {
+    for (let i = 0; i < length; i++) {
         password += chars.charAt(Math.floor(Math.random() * chars.length));
     }
     return password;
@@ -248,9 +250,6 @@ passwordList.addEventListener('click', (e) => {
     const id = button.dataset.id;
     
     switch(action) {
-        case 'toggle':
-            togglePassword(id);
-            break;
         case 'copy':
             copyPassword(id, button);
             break;
@@ -285,7 +284,25 @@ passwordForm.addEventListener('submit', async (e) => {
         const index = passwords.findIndex(p => p.id === editingId);
         passwords[index] = { ...passwords[index], ...data };
     } else {
-        // 新規の場合は新しいエントリとして追加
+        // 新規の場合は重複チェック
+        const existingEntry = passwords.find(p => 
+            p.entryName.toLowerCase() === data.entryName.toLowerCase()
+        );
+        
+        if (existingEntry) {
+            // 重複している場合は確認
+            const confirmed = confirm(
+                `エントリ名「${data.entryName}」は既に存在します。\n` +
+                `既存のエントリに加えて新しいエントリとして登録しますか？\n\n` +
+                `※ 一覧表では最新のエントリのみが表示されます。`
+            );
+            
+            if (!confirmed) {
+                return; // キャンセルされた場合は処理を中止
+            }
+        }
+        
+        // 新しいエントリとして追加
         data.id = Date.now().toString();
         passwords.push(data);
     }
@@ -299,6 +316,18 @@ window.addEventListener('click', (e) => {
     if (e.target === modal) {
         hideModal();
     }
+});
+
+// ダークモード切り替え
+themeToggle.addEventListener('click', () => {
+    document.body.classList.toggle('dark-mode');
+    const isDarkMode = document.body.classList.contains('dark-mode');
+    
+    // アイコンの更新
+    themeIcon.textContent = isDarkMode ? '☀️' : '🌙';
+    
+    // 設定の保存
+    localStorage.setItem('darkMode', isDarkMode);
 });
 
 // 初期化実行
