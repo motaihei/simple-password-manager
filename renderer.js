@@ -21,6 +21,18 @@ const generateBtn = document.getElementById('generateBtn');
 const themeToggle = document.getElementById('themeToggle');
 const themeIcon = document.querySelector('.theme-icon');
 
+// 詳細モーダルのDOM要素
+const detailModal = document.getElementById('detailModal');
+const closeDetailModal = document.getElementById('closeDetailModal');
+const detailEntryName = document.getElementById('detailEntryName');
+const detailUsername = document.getElementById('detailUsername');
+const detailPassword = document.getElementById('detailPassword');
+const detailUpdatedAt = document.getElementById('detailUpdatedAt');
+const detailCopyBtn = document.getElementById('detailCopyBtn');
+const detailUpdateBtn = document.getElementById('detailUpdateBtn');
+const detailEditBtn = document.getElementById('detailEditBtn');
+const detailDeleteBtn = document.getElementById('detailDeleteBtn');
+
 // 初期化
 async function init() {
     passwords = await window.electronAPI.loadPasswords();
@@ -63,7 +75,7 @@ function renderPasswordList() {
     emptyState.classList.add('hidden');
 
     passwordList.innerHTML = filteredPasswords.map(password => `
-        <tr>
+        <tr style="cursor: pointer;" data-id="${password.id}">
             <td>${escapeHtml(password.entryName)}</td>
             <td>${escapeHtml(password.username)}</td>
             <td>
@@ -73,11 +85,7 @@ function renderPasswordList() {
                 </div>
             </td>
             <td>${formatDateTime(password.updatedAt)}</td>
-            <td>
-                <button class="btn btn-secondary btn-sm" data-action="update" data-id="${password.id}">更新</button>
-                <button class="btn btn-secondary btn-sm" data-action="edit" data-id="${password.id}">編集</button>
-                <button class="btn btn-danger btn-sm" data-action="delete" data-id="${password.id}">削除</button>
-            </td>
+            <td></td>
         </tr>
     `).join('');
 }
@@ -94,29 +102,12 @@ function formatDateTime(dateString) {
     if (!dateString) return '不明';
     
     const date = new Date(dateString);
-    const now = new Date();
-    const diffMs = now - date;
-    const diffMins = Math.floor(diffMs / (1000 * 60));
-    const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
-    const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
     
-    if (diffMins < 1) {
-        return 'たった今';
-    } else if (diffMins < 60) {
-        return `${diffMins}分前`;
-    } else if (diffHours < 24) {
-        return `${diffHours}時間前`;
-    } else if (diffDays < 7) {
-        return `${diffDays}日前`;
-    } else {
-        return date.toLocaleDateString('ja-JP', {
-            year: 'numeric',
-            month: 'numeric',
-            day: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit'
-        });
-    }
+    return date.toLocaleDateString('ja-JP', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit'
+    });
 }
 
 
@@ -217,6 +208,30 @@ function hideModal() {
     editingId = null;
 }
 
+// 詳細モーダルの表示
+function showDetailModal(id) {
+    const password = passwords.find(p => p.id === id);
+    if (!password) return;
+    
+    detailEntryName.textContent = password.entryName;
+    detailUsername.textContent = password.username;
+    detailPassword.textContent = password.password;
+    detailUpdatedAt.textContent = formatDateTime(password.updatedAt);
+    
+    // ボタンにIDを保存
+    detailCopyBtn.dataset.id = id;
+    detailUpdateBtn.dataset.id = id;
+    detailEditBtn.dataset.id = id;
+    detailDeleteBtn.dataset.id = id;
+    
+    detailModal.style.display = 'block';
+}
+
+// 詳細モーダルを閉じる
+function hideDetailModal() {
+    detailModal.style.display = 'none';
+}
+
 // データの保存
 async function savePasswords() {
     await window.electronAPI.savePasswords(passwords);
@@ -244,24 +259,18 @@ generateBtn.addEventListener('click', () => {
 // テーブルのクリックイベントを委譲で処理
 passwordList.addEventListener('click', (e) => {
     const button = e.target.closest('button');
-    if (!button) return;
     
-    const action = button.dataset.action;
-    const id = button.dataset.id;
+    if (button && button.dataset.action === 'copy') {
+        // コピーボタンの処理
+        e.stopPropagation();
+        copyPassword(button.dataset.id, button);
+        return;
+    }
     
-    switch(action) {
-        case 'copy':
-            copyPassword(id, button);
-            break;
-        case 'update':
-            updatePassword(id);
-            break;
-        case 'edit':
-            editPassword(id);
-            break;
-        case 'delete':
-            deletePassword(id);
-            break;
+    // 行クリックで詳細モーダルを表示
+    const row = e.target.closest('tr');
+    if (row && row.dataset.id) {
+        showDetailModal(row.dataset.id);
     }
 });
 
@@ -316,6 +325,9 @@ window.addEventListener('click', (e) => {
     if (e.target === modal) {
         hideModal();
     }
+    if (e.target === detailModal) {
+        hideDetailModal();
+    }
 });
 
 // ダークモード切り替え
@@ -328,6 +340,32 @@ themeToggle.addEventListener('click', () => {
     
     // 設定の保存
     localStorage.setItem('darkMode', isDarkMode);
+});
+
+// 詳細モーダルのイベントリスナー
+closeDetailModal.addEventListener('click', hideDetailModal);
+
+detailCopyBtn.addEventListener('click', async () => {
+    const id = detailCopyBtn.dataset.id;
+    await copyPassword(id, detailCopyBtn);
+});
+
+detailUpdateBtn.addEventListener('click', () => {
+    const id = detailUpdateBtn.dataset.id;
+    hideDetailModal();
+    updatePassword(id);
+});
+
+detailEditBtn.addEventListener('click', () => {
+    const id = detailEditBtn.dataset.id;
+    hideDetailModal();
+    editPassword(id);
+});
+
+detailDeleteBtn.addEventListener('click', () => {
+    const id = detailDeleteBtn.dataset.id;
+    hideDetailModal();
+    deletePassword(id);
 });
 
 // 初期化実行
