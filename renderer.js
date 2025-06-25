@@ -6,6 +6,7 @@ let editingId = null;
 // DOM要素の取得
 const searchBox = document.getElementById('searchBox');
 const addBtn = document.getElementById('addBtn');
+const openFolderBtn = document.getElementById('openFolderBtn');
 const passwordList = document.getElementById('passwordList');
 const emptyState = document.getElementById('emptyState');
 const passwordTable = document.getElementById('passwordTable');
@@ -277,6 +278,18 @@ addBtn.addEventListener('click', () => {
     entryNameInput.disabled = false;
     usernameInput.disabled = false;
     showModal();
+});
+
+// フォルダーを開くボタンのイベントリスナー
+openFolderBtn.addEventListener('click', async () => {
+    try {
+        const result = await window.electronAPI.openPasswordFolder();
+        if (!result.success) {
+            console.error('フォルダーを開けませんでした:', result.error);
+        }
+    } catch (error) {
+        console.error('エラーが発生しました:', error);
+    }
 });
 
 closeModal.addEventListener('click', hideModal);

@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain } = require('electron');
+const { app, BrowserWindow, ipcMain, shell } = require('electron');
 const path = require('path');
 const fs = require('fs').promises;
 
@@ -54,6 +54,18 @@ ipcMain.handle('save-passwords', async (event, passwords) => {
     return { success: true };
   } catch (error) {
     console.error('Error saving passwords:', error);
+    return { success: false, error: error.message };
+  }
+});
+
+// パスワードファイル保存場所をエクスプローラーで開く
+ipcMain.handle('open-password-folder', async () => {
+  try {
+    const userDataPath = app.getPath('userData');
+    await shell.openPath(userDataPath);
+    return { success: true };
+  } catch (error) {
+    console.error('Error opening folder:', error);
     return { success: false, error: error.message };
   }
 });
