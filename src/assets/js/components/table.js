@@ -27,7 +27,7 @@ class TableManager {
             p.entryName.toLowerCase().includes(searchTerm)
         );
 
-        // エントリ名が重複している場合は最新のもののみを表示
+        // エントリが重複している場合は最新のもののみを表示
         const uniquePasswords = new Map();
         filteredPasswords.forEach(password => {
             const key = password.entryName.toLowerCase();

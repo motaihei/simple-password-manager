@@ -89,7 +89,7 @@ class PasswordManagerApp {
             if (existingEntry) {
                 // 重複している場合は確認
                 const confirmed = confirm(
-                    `エントリ名「${data.entryName}」は既に存在します。\n` +
+                    `エントリ「${data.entryName}」は既に存在します。\n` +
                     `既存のエントリに加えて新しいエントリとして登録しますか？\n\n` +
                     `※ 一覧表では最新のエントリのみが表示されます。`
                 );
