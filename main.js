@@ -2,6 +2,8 @@ const { app, BrowserWindow, ipcMain, shell } = require('electron');
 const path = require('path');
 const fs = require('fs').promises;
 
+let settingsWindow = null;
+
 const createWindow = () => {
   const mainWindow = new BrowserWindow({
     width: 600,
@@ -18,8 +20,37 @@ const createWindow = () => {
   mainWindow.loadFile('index.html');
 };
 
+const createSettingsWindow = () => {
+  if (settingsWindow) {
+    settingsWindow.focus();
+    return;
+  }
+
+  settingsWindow = new BrowserWindow({
+    width: 500,
+    height: 400,
+    resizable: false,
+    icon: path.join(__dirname, 'assets', 'icons', 'icon.ico'),
+    webPreferences: {
+      preload: path.join(__dirname, 'preload.js'),
+      contextIsolation: true,
+      enableRemoteModule: false,
+      nodeIntegration: false
+    }
+  });
+
+  settingsWindow.loadFile('settings.html');
+  
+  settingsWindow.on('closed', () => {
+    settingsWindow = null;
+  });
+};
+
 app.whenReady().then(() => {
   createWindow();
+  
+  // IPCハンドラー登録の確認ログ
+  console.log('IPCハンドラーが登録されました: load-passwords, save-passwords, open-password-folder, open-settings, close-settings');
 
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
@@ -60,12 +91,29 @@ ipcMain.handle('save-passwords', async (event, passwords) => {
 
 // パスワードファイル保存場所をエクスプローラーで開く
 ipcMain.handle('open-password-folder', async () => {
+  console.log('open-password-folder ハンドラーが呼び出されました');
   try {
     const userDataPath = app.getPath('userData');
+    console.log('フォルダーパス:', userDataPath);
     await shell.openPath(userDataPath);
+    console.log('フォルダーを正常に開きました');
     return { success: true };
   } catch (error) {
     console.error('Error opening folder:', error);
     return { success: false, error: error.message };
   }
+});
+
+// 設定ウィンドウを開く
+ipcMain.handle('open-settings', () => {
+  createSettingsWindow();
+  return { success: true };
+});
+
+// 設定ウィンドウを閉じる
+ipcMain.handle('close-settings', () => {
+  if (settingsWindow) {
+    settingsWindow.close();
+  }
+  return { success: true };
 });
