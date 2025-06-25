@@ -350,6 +350,62 @@
         body.dark-mode #detailUpdatedAt {
             color: #8a8a8a !important;
         }
+        
+        /* ツールチップスタイル */
+        .tooltip-container {
+            position: relative;
+        }
+        .tooltip-container::before {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #333;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+            z-index: 1001;
+            margin-bottom: 5px;
+            pointer-events: none;
+            max-width: 200px;
+            white-space: normal;
+            text-align: center;
+            line-height: 1.4;
+        }
+        .tooltip-container::after {
+            content: '';
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 5px solid transparent;
+            border-top-color: #333;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+            z-index: 1001;
+            pointer-events: none;
+        }
+        .tooltip-container:hover::before,
+        .tooltip-container:hover::after {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* ダークモード用ツールチップスタイル */
+        body.dark-mode .tooltip-container::before {
+            background-color: #4a4a4a;
+            color: #e0e0e0;
+        }
+        body.dark-mode .tooltip-container::after {
+            border-top-color: #4a4a4a;
+        }
     </style>
 </head>
 <body>
@@ -464,8 +520,8 @@
                     <p id="detailUpdatedAt" style="margin: 5px 0; font-size: 14px; color: #666;"></p>
                 </div>
                 <div class="form-actions" style="margin-top: 30px;">
-                    <button class="btn btn-secondary" id="detailUpdateBtn">更新</button>
-                    <button class="btn btn-secondary" id="detailEditBtn">編集</button>
+                    <button class="btn btn-secondary tooltip-container" id="detailUpdateBtn" data-tooltip="パスワードのみを新しいランダムパスワードに更新します">更新</button>
+                    <button class="btn btn-secondary tooltip-container" id="detailEditBtn" data-tooltip="エントリ名、ユーザー名、パスワードをすべて編集できます">編集</button>
                     <button class="btn btn-danger" id="detailDeleteBtn">削除</button>
                 </div>
             </div>
