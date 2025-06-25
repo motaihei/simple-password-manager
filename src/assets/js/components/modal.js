@@ -13,6 +13,7 @@ class ModalManager {
         this.usernameInput = document.getElementById('username');
         this.urlInput = document.getElementById('url');
         this.passwordInput = document.getElementById('password');
+        this.notesInput = document.getElementById('notes');
         this.generateBtn = document.getElementById('generateBtn');
         
         this.detailModal = document.getElementById('detailModal');
@@ -21,6 +22,7 @@ class ModalManager {
         this.detailUsername = document.getElementById('detailUsername');
         this.detailPassword = document.getElementById('detailPassword');
         this.detailUrl = document.getElementById('detailUrl');
+        this.detailNotes = document.getElementById('detailNotes');
         this.detailUpdatedAt = document.getElementById('detailUpdatedAt');
         this.detailToggleBtn = document.getElementById('detailToggleBtn');
         this.detailUpdateBtn = document.getElementById('detailUpdateBtn');
@@ -76,6 +78,7 @@ class ModalManager {
         this.entryNameInput.disabled = false;
         this.usernameInput.disabled = false;
         this.urlInput.disabled = false;
+        this.notesInput.value = '';
         this.editingId = null;
     }
     
@@ -91,6 +94,9 @@ class ModalManager {
         
         // URLの表示
         this.detailUrl.textContent = password.url || '未設定';
+        
+        // 備考の表示
+        this.detailNotes.textContent = password.notes || '';
         
         this.detailUpdatedAt.textContent = password.updatedAt;
         
@@ -144,6 +150,8 @@ class ModalManager {
         this.modalTitle.textContent = '新規パスワード';
         this.entryNameInput.disabled = false;
         this.usernameInput.disabled = false;
+        this.notesInput.value = '';
+        this.notesInput.disabled = false;
         this.showMainModal();
     }
     
@@ -156,6 +164,8 @@ class ModalManager {
         this.usernameInput.disabled = true;
         this.urlInput.value = password.url || '';
         this.urlInput.disabled = true;
+        this.notesInput.value = password.notes || '';
+        this.notesInput.disabled = true;
         const settings = getPasswordGenerationSettings();
         this.passwordInput.value = generatePassword(settings.charType, settings.length);
         this.showMainModal();
@@ -171,6 +181,8 @@ class ModalManager {
         this.urlInput.value = password.url || '';
         this.urlInput.disabled = false;
         this.passwordInput.value = password.password;
+        this.notesInput.value = password.notes || '';
+        this.notesInput.disabled = false;
         this.showMainModal();
     }
 }

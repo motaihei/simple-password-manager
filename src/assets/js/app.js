@@ -69,6 +69,7 @@ class PasswordManagerApp {
             username: this.modalManager.usernameInput.value,
             url: this.modalManager.urlInput.value || null,
             password: this.modalManager.passwordInput.value,
+            notes: this.modalManager.notesInput.value || '',
             updatedAt: new Date().toISOString()
         };
         
