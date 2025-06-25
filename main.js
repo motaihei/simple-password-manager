@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, shell } = require('electron');
+const { app, BrowserWindow, ipcMain, shell, Menu } = require('electron');
 const path = require('path');
 const fs = require('fs').promises;
 
@@ -10,6 +10,7 @@ const createWindow = () => {
     width: 600,
     height: 1067,
     icon: path.join(__dirname, 'assets', 'icons', 'icon.ico'), // Windowsアイコン
+    autoHideMenuBar: true,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       contextIsolation: true,
@@ -35,6 +36,7 @@ const createSettingsWindow = () => {
     parent: mainWindow,
     center: true,
     show: false,
+    autoHideMenuBar: true,
     icon: path.join(__dirname, 'assets', 'icons', 'icon.ico'),
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
@@ -56,6 +58,9 @@ const createSettingsWindow = () => {
 };
 
 app.whenReady().then(() => {
+  // アプリケーションメニューを無効化
+  Menu.setApplicationMenu(null);
+  
   createWindow();
   
   // IPCハンドラー登録の確認ログ
