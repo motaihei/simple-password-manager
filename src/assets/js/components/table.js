@@ -54,19 +54,20 @@ class TableManager {
                 <td>${escapeHtml(password.username)}</td>
                 <td>
                     <div class="password-cell">
-                        <button class="btn btn-secondary btn-sm copy-password-btn" data-action="copy" data-id="${password.id}">📋 コピー</button>
+                        <button class="btn btn-secondary btn-sm btn-table-action copy-password-btn" data-action="copy" data-id="${password.id}">📋 コピー</button>
                     </div>
                 </td>
                 <td>
-                    <button class="btn btn-secondary btn-sm${password.url ? '' : ' disabled'}" 
-                            data-action="open-url" 
-                            data-id="${password.id}" 
-                            ${password.url ? '' : 'disabled'}>
-                        🔗 開く
-                    </button>
+                    <div class="password-cell">
+                        <button class="btn btn-secondary btn-sm btn-table-action${password.url ? '' : ' disabled'}" 
+                                data-action="open-url" 
+                                data-id="${password.id}" 
+                                ${password.url ? '' : 'disabled'}>
+                            🔗 開く
+                        </button>
+                    </div>
                 </td>
                 <td>${formatDateTime(password.updatedAt)}</td>
-                <td></td>
             </tr>
         `).join('');
     }

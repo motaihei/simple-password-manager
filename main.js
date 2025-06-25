@@ -19,6 +19,11 @@ const createWindow = () => {
   });
 
   mainWindow.loadFile('index.html');
+  
+  // 開発時のみ開発者ツールを表示
+  if (!app.isPackaged) {
+    mainWindow.webContents.openDevTools();
+  }
 };
 
 

@@ -8,7 +8,7 @@ table {
 th,
 td {
     padding: 8px 6px;
-    text-align: left;
+    text-align: center;
     border-bottom: 1px solid #ddd;
     font-size: 13px;
     vertical-align: middle;
@@ -19,10 +19,6 @@ th {
     background-color: #f8f9fa;
     font-weight: 600;
     color: #495057;
-    text-align: left;
-}
-
-th:nth-child(3) {
     text-align: center;
 }
 
@@ -37,7 +33,8 @@ tr:hover {
     height: 100%;
 }
 
-.copy-password-btn {
+/* テーブル内のアクションボタン共通スタイル */
+.btn-table-action {
     flex-shrink: 0;
     min-width: 80px;
     padding: 6px 12px;
@@ -47,4 +44,18 @@ tr:hover {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+/* 無効化されたボタンのスタイル */
+.btn-table-action.disabled,
+.btn-table-action:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.btn-table-action.disabled:hover,
+.btn-table-action:disabled:hover {
+    background-color: #6c757d;
+    transform: none;
 }
