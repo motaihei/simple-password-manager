@@ -144,6 +144,18 @@ class PasswordManagerApp {
     handleDetailUpdate() {
         const id = this.modalManager.detailUpdateBtn.dataset.id;
         const password = this.passwords.find(p => p.id === id);
+        
+        // 更新確認ダイアログ
+        const confirmed = confirm(
+            `エントリ「${password.entryName}」のパスワードを更新しますか？\n\n` +
+            `この操作により、新しいパスワードで別のエントリが作成されます。\n` +
+            `既存のエントリは履歴として残ります。`
+        );
+        
+        if (!confirmed) {
+            return;
+        }
+        
         this.modalManager.hideDetailModal();
         this.modalManager.setupForUpdate(password);
     }
@@ -151,6 +163,18 @@ class PasswordManagerApp {
     handleDetailEdit() {
         const id = this.modalManager.detailEditBtn.dataset.id;
         const password = this.passwords.find(p => p.id === id);
+        
+        // 編集確認ダイアログ
+        const confirmed = confirm(
+            `エントリ「${password.entryName}」を編集しますか？\n\n` +
+            `この操作により、既存のエントリ情報が上書きされます。\n` +
+            `編集前の情報は失われます。`
+        );
+        
+        if (!confirmed) {
+            return;
+        }
+        
         this.modalManager.hideDetailModal();
         this.modalManager.setupForEdit(password);
     }
