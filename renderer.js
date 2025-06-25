@@ -28,10 +28,15 @@ const detailEntryName = document.getElementById('detailEntryName');
 const detailUsername = document.getElementById('detailUsername');
 const detailPassword = document.getElementById('detailPassword');
 const detailUpdatedAt = document.getElementById('detailUpdatedAt');
+const detailToggleBtn = document.getElementById('detailToggleBtn');
 const detailCopyBtn = document.getElementById('detailCopyBtn');
 const detailUpdateBtn = document.getElementById('detailUpdateBtn');
 const detailEditBtn = document.getElementById('detailEditBtn');
 const detailDeleteBtn = document.getElementById('detailDeleteBtn');
+
+// パスワードの表示状態を管理
+let isPasswordVisible = false;
+let currentPassword = '';
 
 // 初期化
 async function init() {
@@ -215,10 +220,17 @@ function showDetailModal(id) {
     
     detailEntryName.textContent = password.entryName;
     detailUsername.textContent = password.username;
-    detailPassword.textContent = password.password;
+    
+    // パスワードを初期状態で非表示に設定
+    currentPassword = password.password;
+    isPasswordVisible = false;
+    detailPassword.textContent = '••••••••';
+    detailToggleBtn.textContent = '👁️ 表示';
+    
     detailUpdatedAt.textContent = formatDateTime(password.updatedAt);
     
     // ボタンにIDを保存
+    detailToggleBtn.dataset.id = id;
     detailCopyBtn.dataset.id = id;
     detailUpdateBtn.dataset.id = id;
     detailEditBtn.dataset.id = id;
@@ -230,6 +242,24 @@ function showDetailModal(id) {
 // 詳細モーダルを閉じる
 function hideDetailModal() {
     detailModal.style.display = 'none';
+    // パスワード表示状態をリセット
+    isPasswordVisible = false;
+    currentPassword = '';
+}
+
+// パスワードの表示・非表示を切り替え
+function togglePasswordVisibility() {
+    if (isPasswordVisible) {
+        // 非表示に切り替え
+        detailPassword.textContent = '••••••••';
+        detailToggleBtn.textContent = '👁️ 表示';
+        isPasswordVisible = false;
+    } else {
+        // 表示に切り替え
+        detailPassword.textContent = currentPassword;
+        detailToggleBtn.textContent = '🙈 非表示';
+        isPasswordVisible = true;
+    }
 }
 
 // データの保存
@@ -344,6 +374,8 @@ themeToggle.addEventListener('click', () => {
 
 // 詳細モーダルのイベントリスナー
 closeDetailModal.addEventListener('click', hideDetailModal);
+
+detailToggleBtn.addEventListener('click', togglePasswordVisibility);
 
 detailCopyBtn.addEventListener('click', async () => {
     const id = detailCopyBtn.dataset.id;
