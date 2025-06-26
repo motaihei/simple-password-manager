@@ -250,7 +250,7 @@ class TableManager {
     // ソートアイコンの更新
     updateSortIcons() {
         const headers = this.passwordTable.querySelectorAll('thead th');
-        const columnMap = ['entryName', 'username', '', 'url', 'updatedAt'];
+        const columnMap = ['entryName', 'username', '', '', 'updatedAt'];
         
         headers.forEach((header, index) => {
             const column = columnMap[index];
