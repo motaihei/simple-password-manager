@@ -121,7 +121,7 @@ class TableManager {
                 }
                 
                 this.emptyState.innerHTML = `
-                    <p>「${escapeHtml(searchHost)}」に一致するエントリが見つかりませんでした。</p>
+                    <p>「${escapeHtml(searchHost)}」に一致するドメイン名が見つかりませんでした。</p>
                     <p style="color: #999; font-size: 14px; margin-top: 10px;">
                         検索したドメイン名: <strong>${escapeHtml(searchHost)}</strong>
                     </p>
