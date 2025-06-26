@@ -13,7 +13,16 @@ table {
 }
 
 /* 各列の幅調整 - 固定幅でコンパクトな設計 */
-th:nth-child(1), td:nth-child(1) { width: auto; min-width: 150px; padding-left: 0; padding-right: 6px; } /* エントリ - 残り幅、左張り付き */
+th:nth-child(1), td:nth-child(1) { 
+    width: 150px; 
+    min-width: 150px; 
+    position: sticky; 
+    left: 0; 
+    z-index: 5; 
+    background-color: inherit;
+    padding-left: 0; 
+    padding-right: 6px; 
+} /* エントリ - 左端に固定 */
 th:nth-child(2), td:nth-child(2) { width: auto; min-width: 120px; max-width: 150px; } /* ユーザー名 - 残り幅 */
 th:nth-child(3), td:nth-child(3) { width: 75px; } /* パスワード - 固定幅 */
 th:nth-child(4), td:nth-child(4) { width: 100px; } /* URL - 固定幅 */
@@ -23,6 +32,12 @@ thead {
     position: sticky;
     top: 0;
     z-index: 10;
+}
+
+/* ヘッダーの固定列の背景色を明示的に設定 */
+thead th:nth-child(1) {
+    z-index: 15;
+    background-color: #f8f9fa;
 }
 
 th,
@@ -37,6 +52,7 @@ td {
 /* エントリ列のヘッダとセル内容を中央寄せ */
 th:nth-child(1), td:nth-child(1) {
     text-align: center;
+    vertical-align: middle;
 }
 
 /* ユーザー名列の特別スタイル */
@@ -57,17 +73,6 @@ td:nth-child(2) {
     cursor: pointer;
 }
 
-/* ユーザー名ホバー時の完全表示 */
-td:nth-child(2):hover {
-    overflow: visible;
-    white-space: normal;
-    word-break: break-all;
-    background-color: #f8f9fa;
-    z-index: 100;
-    position: relative;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-    border-radius: 4px;
-}
 
 th {
     background-color: #f8f9fa;
@@ -76,6 +81,8 @@ th {
     text-align: center;
     padding: 6px 6px;
     border-bottom: 2px solid #ddd;
+    position: relative;
+    user-select: none;
 }
 
 td {
@@ -118,4 +125,36 @@ tr:hover {
 .btn-table-action:disabled:hover {
     background-color: #6c757d;
     transform: none;
+}
+
+/* ソート可能なヘッダーのスタイル */
+th[style*="cursor: pointer"] {
+    transition: background-color 0.2s ease;
+}
+
+th[style*="cursor: pointer"]:hover {
+    background-color: #e9ecef;
+}
+
+/* ソートアイコンのスタイル */
+.sort-icon {
+    display: inline-block;
+    font-size: 10px;
+    margin-left: 4px;
+    vertical-align: middle;
+    transition: opacity 0.2s ease;
+}
+
+/* ダークモード対応 */
+.dark-mode th {
+    background-color: #2b3035;
+    color: #e4e6eb;
+}
+
+.dark-mode thead th:nth-child(1) {
+    background-color: #2b3035;
+}
+
+.dark-mode th[style*="cursor: pointer"]:hover {
+    background-color: #3a3f44;
 }

@@ -9,11 +9,28 @@ class TableManager {
         this.passwordTable = document.getElementById('passwordTable');
         this.passwords = [];
         
+        // ソート関連のプロパティ
+        this.sortColumn = 'entryName'; // デフォルトはエントリ名でソート
+        this.sortDirection = 'asc'; // 'asc' または 'desc'
+        
         this.initEventListeners();
     }
     
     initEventListeners() {
         this.searchBox.addEventListener('input', () => this.render());
+        
+        // テーブルヘッダーのクリックイベント
+        const headers = this.passwordTable.querySelectorAll('thead th');
+        headers.forEach((header, index) => {
+            // データ属性でソート可能な列を識別
+            const columnMap = ['entryName', 'username', '', 'url', 'updatedAt'];
+            const column = columnMap[index];
+            
+            if (column) { // 空文字列（パスワード列）以外はソート可能
+                header.style.cursor = 'pointer';
+                header.addEventListener('click', () => this.handleSort(column));
+            }
+        });
     }
     
     setPasswords(passwords) {
@@ -108,6 +125,9 @@ class TableManager {
         });
         
         filteredPasswords = Array.from(uniquePasswords.values());
+        
+        // 現在の設定に基づいてソート
+        filteredPasswords = this.sortData(filteredPasswords);
 
         if (filteredPasswords.length === 0) {
             this.passwordTable.classList.add('hidden');
@@ -175,6 +195,94 @@ class TableManager {
                 </tr>
             `;
         }).join('');
+        
+        // ヘッダーにソートアイコンを更新
+        this.updateSortIcons();
+    }
+    
+    // ソート処理
+    handleSort(column) {
+        // 同じ列をクリックした場合は昇順/降順を切り替え
+        if (this.sortColumn === column) {
+            this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
+        } else {
+            // 違う列をクリックした場合は昇順から開始
+            this.sortColumn = column;
+            this.sortDirection = 'asc';
+        }
+        
+        // 再描画
+        this.render();
+    }
+    
+    // データのソート
+    sortData(data) {
+        return data.sort((a, b) => {
+            let aValue, bValue;
+            
+            switch (this.sortColumn) {
+                case 'entryName':
+                    aValue = a.entryName.toLowerCase();
+                    bValue = b.entryName.toLowerCase();
+                    break;
+                case 'username':
+                    aValue = a.username.toLowerCase();
+                    bValue = b.username.toLowerCase();
+                    break;
+                case 'url':
+                    aValue = a.url ? a.url.toLowerCase() : '';
+                    bValue = b.url ? b.url.toLowerCase() : '';
+                    break;
+                case 'updatedAt':
+                    aValue = new Date(a.updatedAt).getTime();
+                    bValue = new Date(b.updatedAt).getTime();
+                    break;
+                default:
+                    return 0;
+            }
+            
+            if (aValue < bValue) {
+                return this.sortDirection === 'asc' ? -1 : 1;
+            }
+            if (aValue > bValue) {
+                return this.sortDirection === 'asc' ? 1 : -1;
+            }
+            return 0;
+        });
+    }
+    
+    // ソートアイコンの更新
+    updateSortIcons() {
+        const headers = this.passwordTable.querySelectorAll('thead th');
+        const columnMap = ['entryName', 'username', '', 'url', 'updatedAt'];
+        
+        headers.forEach((header, index) => {
+            const column = columnMap[index];
+            
+            // 既存のソートアイコンを削除
+            const existingIcon = header.querySelector('.sort-icon');
+            if (existingIcon) {
+                existingIcon.remove();
+            }
+            
+            // ソート可能な列にアイコンを追加
+            if (column) {
+                const icon = document.createElement('span');
+                icon.className = 'sort-icon';
+                
+                if (column === this.sortColumn) {
+                    // 現在ソート中の列
+                    icon.textContent = this.sortDirection === 'asc' ? ' ▲' : ' ▼';
+                    icon.style.opacity = '1';
+                } else {
+                    // ソート可能な他の列
+                    icon.textContent = ' ▼';
+                    icon.style.opacity = '0.3';
+                }
+                
+                header.appendChild(icon);
+            }
+        });
     }
 }
 
