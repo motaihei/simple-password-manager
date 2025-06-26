@@ -15,6 +15,7 @@ class PasswordManagerApp {
         // DOM要素の取得
         this.searchBox = document.getElementById('searchBox');
         this.searchClearBtn = document.getElementById('searchClearBtn');
+        this.searchModeSelect = document.getElementById('searchMode');
         this.addBtn = document.getElementById('addBtn');
         this.settingsBtn = document.getElementById('settingsBtn');
         this.windowResetBtn = document.getElementById('windowResetBtn');

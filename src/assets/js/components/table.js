@@ -36,11 +36,41 @@ class TableManager {
         return escapeHtml(username);
     }
     
+    // URLからホスト部分を抽出
+    extractHost(url) {
+        if (!url) return '';
+        
+        try {
+            // プロトコルがない場合は追加
+            const urlWithProtocol = url.startsWith('http') ? url : 'https://' + url;
+            const urlObj = new URL(urlWithProtocol);
+            return urlObj.hostname.toLowerCase();
+        } catch (e) {
+            // URLの解析に失敗した場合は元の文字列をそのまま返す
+            return url.toLowerCase();
+        }
+    }
+    
     render() {
         const searchTerm = this.searchBox.value.toLowerCase();
-        let filteredPasswords = this.passwords.filter(p => 
-            p.entryName.toLowerCase().includes(searchTerm)
-        );
+        const searchMode = document.getElementById('searchMode').value;
+        
+        let filteredPasswords;
+        
+        if (searchMode === 'url') {
+            // URL検索モード：ホストのあいまい検索
+            filteredPasswords = this.passwords.filter(p => {
+                if (!p.url) return false;
+                
+                const host = this.extractHost(p.url);
+                return host.includes(searchTerm);
+            });
+        } else {
+            // エントリ検索モード（既存の動作）
+            filteredPasswords = this.passwords.filter(p => 
+                p.entryName.toLowerCase().includes(searchTerm)
+            );
+        }
 
         // エントリが重複している場合は最新のもののみを表示
         const uniquePasswords = new Map();

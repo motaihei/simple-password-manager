@@ -47,10 +47,35 @@ h1 {
 .search-container {
     margin-bottom: 0;
     position: relative;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.search-mode-selector {
+    flex-shrink: 0;
+}
+
+.search-mode-select {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+    background-color: #fafafa;
+    cursor: pointer;
+    min-width: 80px;
+    box-sizing: border-box;
+}
+
+.search-mode-select:focus {
+    outline: none;
+    border-color: #007bff;
+    background-color: white;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
 }
 
 .search-box {
-    width: 100%;
+    flex: 1;
     padding: 10px 40px 10px 14px;
     border: 1px solid #ddd;
     border-radius: 6px;
