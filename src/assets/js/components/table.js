@@ -93,28 +93,38 @@ class TableManager {
         this.passwordTable.classList.remove('hidden');
         this.emptyState.classList.add('hidden');
 
-        this.passwordList.innerHTML = filteredPasswords.map(password => `
-            <tr style="cursor: pointer;" data-id="${password.id}">
-                <td>${escapeHtml(password.entryName)}</td>
-                <td title="${escapeHtml(password.username)}">${this.formatUsername(password.username)}</td>
-                <td>
-                    <div class="password-cell">
-                        <button class="btn btn-secondary btn-sm btn-table-action copy-password-btn" data-action="copy" data-id="${password.id}">📋 コピー</button>
-                    </div>
-                </td>
-                <td>
-                    <div class="password-cell">
-                        <button class="btn btn-secondary btn-sm btn-table-action${password.url ? '' : ' disabled'}" 
-                                data-action="open-url" 
-                                data-id="${password.id}" 
-                                ${password.url ? '' : 'disabled'}>
-                            🔗 開く
-                        </button>
-                    </div>
-                </td>
-                <td>${formatDateTime(password.updatedAt)}</td>
-            </tr>
-        `).join('');
+        this.passwordList.innerHTML = filteredPasswords.map(password => {
+            let entryDisplay = escapeHtml(password.entryName);
+            
+            // URL検索モードの場合、マッチしたホスト部分を表示
+            if (searchMode === 'url' && password.url && searchTerm) {
+                const host = this.extractHost(password.url);
+                entryDisplay = `${escapeHtml(password.entryName)}<br><small style="color: #666; font-size: 12px;">🔗 ${escapeHtml(host)}</small>`;
+            }
+            
+            return `
+                <tr style="cursor: pointer;" data-id="${password.id}">
+                    <td>${entryDisplay}</td>
+                    <td title="${escapeHtml(password.username)}">${this.formatUsername(password.username)}</td>
+                    <td>
+                        <div class="password-cell">
+                            <button class="btn btn-secondary btn-sm btn-table-action copy-password-btn" data-action="copy" data-id="${password.id}">📋 コピー</button>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="password-cell">
+                            <button class="btn btn-secondary btn-sm btn-table-action${password.url ? '' : ' disabled'}" 
+                                    data-action="open-url" 
+                                    data-id="${password.id}" 
+                                    ${password.url ? '' : 'disabled'}>
+                                🔗 開く
+                            </button>
+                        </div>
+                    </td>
+                    <td>${formatDateTime(password.updatedAt)}</td>
+                </tr>
+            `;
+        }).join('');
     }
 }
 
