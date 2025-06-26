@@ -12,7 +12,6 @@ td {
     border-bottom: 1px solid #ddd;
     font-size: 13px;
     vertical-align: middle;
-    height: 48px;
 }
 
 th {
@@ -20,6 +19,11 @@ th {
     font-weight: 600;
     color: #495057;
     text-align: center;
+    padding: 10px 6px;
+}
+
+td {
+    height: 48px;
 }
 
 tr:hover {
