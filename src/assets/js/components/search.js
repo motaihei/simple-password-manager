@@ -28,7 +28,7 @@ class SearchManager {
     updatePlaceholder() {
         const mode = this.searchModeSelect.value;
         if (mode === 'url') {
-            this.searchBox.placeholder = 'URLホストで検索...（例: google.com）';
+            this.searchBox.placeholder = 'URLまたはホストで検索...（例: google.com, https://example.com/path）';
         } else {
             this.searchBox.placeholder = 'エントリで検索...';
         }

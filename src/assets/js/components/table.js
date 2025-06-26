@@ -51,6 +51,24 @@ class TableManager {
         }
     }
     
+    // 文字列がURLかどうかを判定
+    isUrl(str) {
+        if (!str) return false;
+        
+        // URLっぽいパターンをチェック
+        // http:// または https:// で始まる
+        if (str.startsWith('http://') || str.startsWith('https://')) {
+            return true;
+        }
+        
+        // スラッシュを含み、ドットを含む（パスとドメインを持つ）
+        if (str.includes('/') && str.includes('.')) {
+            return true;
+        }
+        
+        return false;
+    }
+    
     render() {
         const searchTerm = this.searchBox.value.toLowerCase();
         const searchMode = document.getElementById('searchMode').value;
@@ -63,7 +81,14 @@ class TableManager {
                 if (!p.url) return false;
                 
                 const host = this.extractHost(p.url);
-                return host.includes(searchTerm);
+                
+                // 検索語がURLの場合、ホスト部分のみを抽出して比較
+                let searchHost = searchTerm;
+                if (this.isUrl(searchTerm)) {
+                    searchHost = this.extractHost(searchTerm);
+                }
+                
+                return host.includes(searchHost);
             });
         } else {
             // エントリ検索モード（既存の動作）
