@@ -124,7 +124,7 @@ async handlePasteToSearchBox() {
         const clipboardText = await navigator.clipboard.readText();
         if (clipboardText && clipboardText.trim().length > 0) {
             this.searchBox.value = clipboardText.trim();
-            this.searchManager.performSearch(clipboardText.trim());
+            this.searchManager.handleSearch();
             this.searchBox.focus();
         }
     } catch (error) {
