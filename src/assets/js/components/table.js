@@ -30,7 +30,7 @@ class TableManager {
             const columnMap = ['entryName', 'username', '', '', 'updatedAt'];
             const column = columnMap[index];
             
-            if (column) { // 空文字列（パスワード列）以外はソート可能
+            if (column) { // 空文字列（パスワード・URL列）以外はソート可能
                 header.style.cursor = 'pointer';
                 header.addEventListener('click', () => this.handleSort(column));
             }

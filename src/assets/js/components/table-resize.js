@@ -2,7 +2,7 @@
 class TableResizer {
     constructor(table) {
         this.table = table;
-        this.resizableColumns = [0, 1, 4]; // エントリ、ユーザー名、更新日のインデックス
+        this.resizableColumns = [0, 1]; // エントリ、ユーザー名のみリサイズ可能
         this.isResizing = false;
         this.currentColumn = null;
         this.startX = 0;
@@ -165,6 +165,39 @@ class TableResizer {
         setTimeout(() => {
             this.table.style.tableLayout = 'fixed';
         }, 0);
+    }
+    
+    // 列幅を初期状態にリセット
+    resetColumnWidths() {
+        // ローカルストレージから保存された列幅を削除
+        try {
+            localStorage.removeItem('tableColumnWidths');
+        } catch (e) {
+            console.error('列幅データの削除に失敗しました:', e);
+        }
+        
+        // CSSで定義されている初期幅に戻すため、インラインスタイルを削除
+        const headers = this.table.querySelectorAll('thead th');
+        const allCells = this.table.querySelectorAll('tbody td');
+        
+        // ヘッダーのインラインスタイルを削除
+        headers.forEach(header => {
+            header.style.width = '';
+            header.style.minWidth = '';
+            header.style.maxWidth = '';
+        });
+        
+        // セルのインラインスタイルを削除
+        allCells.forEach(cell => {
+            cell.style.width = '';
+            cell.style.minWidth = '';
+            cell.style.maxWidth = '';
+        });
+        
+        // テーブルレイアウトを再計算
+        this.updateTableLayout();
+        
+        console.log('テーブルの列幅を初期状態にリセットしました');
     }
     
     // リサイズ機能を破棄

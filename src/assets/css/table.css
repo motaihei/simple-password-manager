@@ -3,6 +3,7 @@
     position: relative;
     height: calc(100vh - 160px);
     overflow-y: auto;
+    overflow-x: hidden; /* 横スクロールを無効化 */
     padding-right: 8px; /* スクロールバー分の余白確保 */
 }
 
@@ -12,21 +13,36 @@ table {
     table-layout: fixed;
 }
 
-/* 各列の幅調整 - リサイズ可能な列と固定幅の列を組み合わせ */
+/* 各列の幅調整 - 右側3列を固定幅に設定 */
 th:nth-child(1), td:nth-child(1) { 
-    width: 150px; 
-    min-width: 50px; 
+    width: calc(50% - 160px); 
+    min-width: 120px; 
     position: sticky; 
     left: 0; 
     z-index: 5; 
     background-color: inherit;
     padding-left: 0; 
     padding-right: 6px; 
-} /* エントリ - 左端に固定、リサイズ可能 */
-th:nth-child(2), td:nth-child(2) { width: 150px; min-width: 50px; } /* ユーザー名 - リサイズ可能 */
-th:nth-child(3), td:nth-child(3) { width: 75px; min-width: 75px; max-width: 75px; } /* パスワード - 固定幅 */
-th:nth-child(4), td:nth-child(4) { width: 100px; min-width: 100px; max-width: 100px; } /* URL - 固定幅 */
-th:nth-child(5), td:nth-child(5) { width: 80px; min-width: 50px; } /* 更新日 - リサイズ可能 */
+} /* エントリ - 左端に固定、可変幅 */
+th:nth-child(2), td:nth-child(2) { 
+    width: calc(50% - 160px); 
+    min-width: 100px; 
+} /* ユーザー名 - 可変幅 */
+th:nth-child(3), td:nth-child(3) { 
+    width: 90px; 
+    min-width: 90px; 
+    max-width: 90px; 
+} /* パスワード - 固定幅 */
+th:nth-child(4), td:nth-child(4) { 
+    width: 120px; 
+    min-width: 120px; 
+    max-width: 120px; 
+} /* URL - 固定幅 */
+th:nth-child(5), td:nth-child(5) { 
+    width: 90px; 
+    min-width: 90px; 
+    max-width: 90px; 
+} /* 更新日 - 固定幅 */
 
 thead {
     position: sticky;
@@ -191,4 +207,26 @@ th[style*="cursor: pointer"]:hover {
 .dark-mode .column-resize-handle:hover {
     background-color: #4a9eff;
     opacity: 0.5;
+}
+
+/* レスポンシブデザイン - 小さい画面での調整 */
+@media (max-width: 1024px) {
+    th:nth-child(1), td:nth-child(1) { width: calc(50% - 140px); min-width: 100px; }
+    th:nth-child(2), td:nth-child(2) { width: calc(50% - 140px); min-width: 80px; }
+    th:nth-child(3), td:nth-child(3) { width: 80px; min-width: 80px; max-width: 80px; }
+    th:nth-child(4), td:nth-child(4) { width: 100px; min-width: 100px; max-width: 100px; }
+    th:nth-child(5), td:nth-child(5) { width: 80px; min-width: 80px; max-width: 80px; }
+}
+
+@media (max-width: 768px) {
+    th:nth-child(1), td:nth-child(1) { width: calc(60% - 120px); min-width: 80px; }
+    th:nth-child(2), td:nth-child(2) { width: calc(40% - 120px); min-width: 70px; }
+    th:nth-child(3), td:nth-child(3) { width: 70px; min-width: 70px; max-width: 70px; }
+    th:nth-child(4), td:nth-child(4) { width: 80px; min-width: 80px; max-width: 80px; }
+    th:nth-child(5), td:nth-child(5) { width: 70px; min-width: 70px; max-width: 70px; }
+    
+    th, td {
+        padding: 3px 4px;
+        font-size: 12px;
+    }
 }

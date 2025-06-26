@@ -257,7 +257,10 @@ class PasswordManagerApp {
     async handleWindowReset() {
         try {
             await window.electronAPI.resetWindowSize();
-            // ウィンドウサイズリセット成功（無音処理）
+            // ウィンドウサイズリセット成功後、テーブルの列幅もリセット
+            if (this.tableManager && this.tableManager.tableResizer) {
+                this.tableManager.tableResizer.resetColumnWidths();
+            }
         } catch (error) {
             this.logger.error('ウィンドウサイズのリセットに失敗しました', error);
         }
