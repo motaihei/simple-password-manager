@@ -112,6 +112,31 @@ class TableManager {
         if (filteredPasswords.length === 0) {
             this.passwordTable.classList.add('hidden');
             this.emptyState.classList.remove('hidden');
+            
+            // URL検索モードで結果がない場合、検知したドメイン名を表示
+            if (searchMode === 'url' && searchTerm) {
+                let searchHost = searchTerm;
+                if (this.isUrl(searchTerm)) {
+                    searchHost = this.extractHost(searchTerm);
+                }
+                
+                this.emptyState.innerHTML = `
+                    <p>「${escapeHtml(searchHost)}」に一致するエントリが見つかりませんでした。</p>
+                    <p style="color: #999; font-size: 14px; margin-top: 10px;">
+                        検索したドメイン名: <strong>${escapeHtml(searchHost)}</strong>
+                    </p>
+                `;
+            } else if (searchMode === 'entry' && searchTerm) {
+                // エントリ検索モードで結果がない場合
+                this.emptyState.innerHTML = `
+                    <p>「${escapeHtml(searchTerm)}」に一致するエントリが見つかりませんでした。</p>
+                `;
+            } else {
+                // デフォルトの空状態メッセージ
+                this.emptyState.innerHTML = `
+                    <p>パスワードが登録されていません。<br>「新規追加」ボタンから追加してください。</p>
+                `;
+            }
             return;
         }
 
