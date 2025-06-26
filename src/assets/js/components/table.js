@@ -1,5 +1,6 @@
 // テーブル表示・操作
 import { escapeHtml, formatDateTime } from '../utils/dom.js';
+import { TableResizer } from './table-resize.js';
 
 class TableManager {
     constructor(searchBox) {
@@ -12,6 +13,9 @@ class TableManager {
         // ソート関連のプロパティ
         this.sortColumn = 'entryName'; // デフォルトはエントリ名でソート
         this.sortDirection = 'asc'; // 'asc' または 'desc'
+        
+        // リサイズ機能の初期化
+        this.tableResizer = new TableResizer(this.passwordTable);
         
         this.initEventListeners();
     }

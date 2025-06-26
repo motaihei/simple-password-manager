@@ -12,21 +12,21 @@ table {
     table-layout: fixed;
 }
 
-/* 各列の幅調整 - 固定幅でコンパクトな設計 */
+/* 各列の幅調整 - リサイズ可能な列と固定幅の列を組み合わせ */
 th:nth-child(1), td:nth-child(1) { 
     width: 150px; 
-    min-width: 150px; 
+    min-width: 50px; 
     position: sticky; 
     left: 0; 
     z-index: 5; 
     background-color: inherit;
     padding-left: 0; 
     padding-right: 6px; 
-} /* エントリ - 左端に固定 */
-th:nth-child(2), td:nth-child(2) { width: auto; min-width: 120px; max-width: 150px; } /* ユーザー名 - 残り幅 */
-th:nth-child(3), td:nth-child(3) { width: 75px; } /* パスワード - 固定幅 */
-th:nth-child(4), td:nth-child(4) { width: 100px; } /* URL - 固定幅 */
-th:nth-child(5), td:nth-child(5) { width: 80px; } /* 更新日 - 固定幅（スクロールバー対応） */
+} /* エントリ - 左端に固定、リサイズ可能 */
+th:nth-child(2), td:nth-child(2) { width: 150px; min-width: 50px; } /* ユーザー名 - リサイズ可能 */
+th:nth-child(3), td:nth-child(3) { width: 75px; min-width: 75px; max-width: 75px; } /* パスワード - 固定幅 */
+th:nth-child(4), td:nth-child(4) { width: 100px; min-width: 100px; max-width: 100px; } /* URL - 固定幅 */
+th:nth-child(5), td:nth-child(5) { width: 80px; min-width: 50px; } /* 更新日 - リサイズ可能 */
 
 thead {
     position: sticky;
@@ -157,4 +157,38 @@ th[style*="cursor: pointer"]:hover {
 
 .dark-mode th[style*="cursor: pointer"]:hover {
     background-color: #3a3f44;
+}
+
+/* リサイズハンドルのスタイル */
+.column-resize-handle {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 5px;
+    cursor: col-resize;
+    user-select: none;
+    background-color: transparent;
+    transition: background-color 0.2s ease;
+}
+
+.column-resize-handle:hover {
+    background-color: #007bff;
+    opacity: 0.5;
+}
+
+/* リサイズ中のテーブルスタイル */
+.table-resizing {
+    cursor: col-resize !important;
+}
+
+.table-resizing * {
+    cursor: col-resize !important;
+    user-select: none !important;
+}
+
+/* ダークモードでのリサイズハンドル */
+.dark-mode .column-resize-handle:hover {
+    background-color: #4a9eff;
+    opacity: 0.5;
 }
