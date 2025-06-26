@@ -8,6 +8,8 @@ const createWindow = () => {
   mainWindow = new BrowserWindow({
     width: 600,
     height: 1067,
+    minWidth: 480,
+    minHeight: 600,
     icon: path.join(__dirname, 'assets', 'icons', 'icon.ico'), // Windowsアイコン
     autoHideMenuBar: true,
     webPreferences: {
