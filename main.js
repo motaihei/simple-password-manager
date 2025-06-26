@@ -33,7 +33,7 @@ const createWindow = () => {
 };
 
 
-app.whenReady().then(() => {
+app.whenReady().then(async () => {
   // アプリケーションメニューを無効化
   Menu.setApplicationMenu(null);
   
