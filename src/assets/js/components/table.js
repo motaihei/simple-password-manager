@@ -23,7 +23,7 @@ class TableManager {
         const headers = this.passwordTable.querySelectorAll('thead th');
         headers.forEach((header, index) => {
             // データ属性でソート可能な列を識別
-            const columnMap = ['entryName', 'username', '', 'url', 'updatedAt'];
+            const columnMap = ['entryName', 'username', '', '', 'updatedAt'];
             const column = columnMap[index];
             
             if (column) { // 空文字列（パスワード列）以外はソート可能
@@ -228,10 +228,6 @@ class TableManager {
                 case 'username':
                     aValue = a.username.toLowerCase();
                     bValue = b.username.toLowerCase();
-                    break;
-                case 'url':
-                    aValue = a.url ? a.url.toLowerCase() : '';
-                    bValue = b.url ? b.url.toLowerCase() : '';
                     break;
                 case 'updatedAt':
                     aValue = new Date(a.updatedAt).getTime();

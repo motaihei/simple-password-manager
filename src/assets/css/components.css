@@ -54,6 +54,21 @@
     transition: all 0.2s;
 }
 
+.window-reset-toggle {
+    padding: 8px 12px;
+    font-size: 10px;
+    min-width: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.window-reset-text {
+    font-weight: 500;
+    line-height: 1.1;
+    text-align: center;
+}
+
 .theme-toggle:hover,
 .settings-toggle:hover,
 .window-reset-toggle:hover {

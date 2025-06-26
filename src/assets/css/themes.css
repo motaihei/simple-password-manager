@@ -14,14 +14,16 @@ body.dark-mode h1 {
 }
 
 body.dark-mode .theme-toggle,
-body.dark-mode .settings-toggle {
+body.dark-mode .settings-toggle,
+body.dark-mode .window-reset-toggle {
     background-color: #3a3a3a;
     border-color: #4a4a4a;
     color: #e0e0e0;
 }
 
 body.dark-mode .theme-toggle:hover,
-body.dark-mode .settings-toggle:hover {
+body.dark-mode .settings-toggle:hover,
+body.dark-mode .window-reset-toggle:hover {
     background-color: #4a4a4a;
     border-color: #5a5a5a;
 }
@@ -219,7 +221,3 @@ body.dark-mode html {
     scrollbar-width: thin;
 }
 
-/* ダークモード用ユーザー名セルホバースタイル */
-body.dark-mode td:nth-child(2):hover {
-    background-color: #4a4a4a;
-}
