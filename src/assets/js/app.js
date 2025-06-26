@@ -16,9 +16,12 @@ class PasswordManagerApp {
         this.searchBox = document.getElementById('searchBox');
         this.addBtn = document.getElementById('addBtn');
         this.settingsBtn = document.getElementById('settingsBtn');
+        this.windowResetBtn = document.getElementById('windowResetBtn');
         this.passwordList = document.getElementById('passwordList');
         this.passwordForm = document.getElementById('passwordForm');
         this.openFolderBtnModal = document.getElementById('openFolderBtnModal');
+        this.changeStoragePathBtn = document.getElementById('changeStoragePathBtn');
+        this.currentStoragePath = document.getElementById('currentStoragePath');
         
         // マネージャーの初期化
         this.modalManager = new ModalManager();
@@ -33,6 +36,18 @@ class PasswordManagerApp {
     async init() {
         this.passwords = await loadPasswords();
         this.tableManager.setPasswords(this.passwords);
+        await this.loadSettings();
+    }
+    
+    async loadSettings() {
+        try {
+            const settings = await window.electronAPI.loadSettings();
+            if (this.currentStoragePath) {
+                this.currentStoragePath.textContent = settings.storageLocation;
+            }
+        } catch (error) {
+            console.error('設定の読み込みに失敗しました:', error);
+        }
     }
     
     initEventListeners() {
@@ -42,8 +57,14 @@ class PasswordManagerApp {
         });
         
         // 設定ボタン
-        this.settingsBtn.addEventListener('click', () => {
+        this.settingsBtn.addEventListener('click', async () => {
+            await this.loadSettings();
             this.modalManager.showSettingsModal();
+        });
+        
+        // ウィンドウサイズリセットボタン
+        this.windowResetBtn.addEventListener('click', () => {
+            this.handleWindowReset();
         });
         
         // フォーム送信
@@ -59,6 +80,9 @@ class PasswordManagerApp {
         
         // 設定モーダルのフォルダーボタン
         this.modalManager.openFolderBtnModal.addEventListener('click', () => openPasswordFolder());
+        
+        // 保存場所変更ボタン
+        this.changeStoragePathBtn.addEventListener('click', () => this.handleChangeStoragePath());
     }
     
     async handleFormSubmit(e) {
@@ -153,10 +177,10 @@ class PasswordManagerApp {
         if (row && row.dataset.id) {
             const password = this.passwords.find(p => p.id === row.dataset.id);
             if (password) {
-                // フォーマット済みの日付を設定
+                // フォーマット済みの日時を設定（詳細表示では時刻も含める）
                 const formattedPassword = {
                     ...password,
-                    updatedAt: formatDateTime(password.updatedAt)
+                    updatedAt: formatDateTime(password.updatedAt, true)
                 };
                 this.modalManager.showDetailModal(formattedPassword);
             }
@@ -203,6 +227,49 @@ class PasswordManagerApp {
     async savePasswordsAndRefresh() {
         await savePasswords(this.passwords);
         this.tableManager.setPasswords(this.passwords);
+    }
+    
+    async handleWindowReset() {
+        try {
+            await window.electronAPI.resetWindowSize();
+            console.log('ウィンドウサイズをリセットしました');
+        } catch (error) {
+            console.error('ウィンドウサイズのリセットに失敗しました:', error);
+        }
+    }
+    
+    async handleChangeStoragePath() {
+        try {
+            const result = await window.electronAPI.selectStorageFolder();
+            
+            if (result.success && result.folderPath) {
+                const confirmed = confirm(
+                    `パスワードファイルの保存場所を以下に変更しますか？\n\n` +
+                    `新しい保存場所: ${result.folderPath}\n\n` +
+                    `注意: 既存のパスワードファイルは新しい場所には自動的に移動されません。\n` +
+                    `必要に応じて手動でファイルをコピーしてください。`
+                );
+                
+                if (confirmed) {
+                    const settings = await window.electronAPI.loadSettings();
+                    settings.storageLocation = result.folderPath;
+                    
+                    const saveResult = await window.electronAPI.saveSettings(settings);
+                    
+                    if (saveResult.success) {
+                        this.currentStoragePath.textContent = result.folderPath;
+                        alert('保存場所を変更しました。');
+                    } else {
+                        alert('保存場所の変更に失敗しました: ' + saveResult.error);
+                    }
+                }
+            } else if (result.error !== 'キャンセルされました') {
+                alert('フォルダーの選択に失敗しました: ' + result.error);
+            }
+        } catch (error) {
+            console.error('保存場所の変更に失敗しました:', error);
+            alert('保存場所の変更に失敗しました。');
+        }
     }
 }
 

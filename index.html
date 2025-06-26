@@ -26,13 +26,14 @@
                 <button class="settings-toggle" id="settingsBtn" title="設定">
                     <span class="settings-icon">⚙️</span>
                 </button>
+                <button class="window-reset-toggle" id="windowResetBtn" title="アプリの表示サイズ（ウィンドウ）を標準サイズに戻す">
+                    <span class="window-reset-icon">🔄</span>
+                </button>
             </div>
+            <button class="btn btn-primary add-btn-right" id="addBtn">新規</button>
         </div>
 
         <div class="header-section">
-            <div class="action-container">
-                <button class="btn btn-primary" id="addBtn">新規</button>
-            </div>
             <div class="search-container">
                 <input type="text" class="search-box" id="searchBox" placeholder="エントリで検索...">
             </div>
@@ -171,9 +172,12 @@
                 <div class="setting-item">
                     <label class="setting-label">パスワードファイルの保存場所</label>
                     <div class="setting-description">
-                        パスワードデータが保存されているフォルダーをエクスプローラーで開きます。
+                        現在の保存場所：<span id="currentStoragePath">読み込み中...</span>
                     </div>
-                    <button class="btn btn-primary" id="openFolderBtnModal">📂 保存場所を開く</button>
+                    <div style="display: flex; gap: 10px; margin-top: 10px;">
+                        <button class="btn btn-primary" id="openFolderBtnModal">📂 保存場所を開く</button>
+                        <button class="btn btn-secondary" id="changeStoragePathBtn">📁 保存場所を変更</button>
+                    </div>
                 </div>
             </div>
         </div>
