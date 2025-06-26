@@ -25,6 +25,10 @@ class PasswordManagerApp {
         this.changeStoragePathBtn = document.getElementById('changeStoragePathBtn');
         this.currentStoragePath = document.getElementById('currentStoragePath');
         
+        // コンテキストメニュー要素
+        this.searchBoxContextMenu = document.getElementById('searchBoxContextMenu');
+        this.pasteMenuItem = document.getElementById('pasteMenuItem');
+        
         // マネージャーの初期化
         this.modalManager = new ModalManager();
         this.tableManager = new TableManager(this.searchBox);
@@ -88,6 +92,20 @@ class PasswordManagerApp {
         
         // 検索クリアボタン
         this.searchClearBtn.addEventListener('click', () => this.handleSearchClear());
+        
+        // 検索ボックスの右クリックイベント
+        this.searchBox.addEventListener('contextmenu', (e) => this.handleSearchBoxContextMenu(e));
+        
+        // コンテキストメニューのクリックイベント
+        this.pasteMenuItem.addEventListener('click', () => this.handlePasteToSearchBox());
+        
+        // コンテキストメニューを隠すイベント
+        document.addEventListener('click', (e) => this.hideContextMenu(e));
+        document.addEventListener('contextmenu', (e) => {
+            if (e.target !== this.searchBox) {
+                this.hideContextMenu(e);
+            }
+        });
     }
     
     async handleFormSubmit(e) {
@@ -280,6 +298,61 @@ class PasswordManagerApp {
     handleSearchClear() {
         this.searchBox.value = '';
         this.searchManager.clearSearch();
+    }
+    
+    async handleSearchBoxContextMenu(e) {
+        e.preventDefault();
+        
+        // クリップボードの内容をチェック
+        try {
+            const clipboardText = await navigator.clipboard.readText();
+            
+            // クリップボードに文字列があるかチェック
+            if (clipboardText && clipboardText.trim().length > 0) {
+                this.pasteMenuItem.classList.remove('disabled');
+            } else {
+                this.pasteMenuItem.classList.add('disabled');
+            }
+        } catch (error) {
+            // クリップボードアクセスに失敗した場合は無効にする
+            this.pasteMenuItem.classList.add('disabled');
+        }
+        
+        // コンテキストメニューを表示
+        this.showContextMenu(e.clientX, e.clientY);
+    }
+    
+    showContextMenu(x, y) {
+        this.searchBoxContextMenu.style.left = `${x}px`;
+        this.searchBoxContextMenu.style.top = `${y}px`;
+        this.searchBoxContextMenu.classList.remove('hidden');
+    }
+    
+    hideContextMenu(e) {
+        if (!this.searchBoxContextMenu.contains(e.target)) {
+            this.searchBoxContextMenu.classList.add('hidden');
+        }
+    }
+    
+    async handlePasteToSearchBox() {
+        // 無効状態なら何もしない
+        if (this.pasteMenuItem.classList.contains('disabled')) {
+            return;
+        }
+        
+        try {
+            const clipboardText = await navigator.clipboard.readText();
+            if (clipboardText && clipboardText.trim().length > 0) {
+                this.searchBox.value = clipboardText.trim();
+                this.searchManager.performSearch(clipboardText.trim());
+                this.searchBox.focus();
+            }
+        } catch (error) {
+            console.error('クリップボードからの貼り付けに失敗しました:', error);
+        }
+        
+        // コンテキストメニューを隠す
+        this.searchBoxContextMenu.classList.add('hidden');
     }
 }
 
