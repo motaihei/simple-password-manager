@@ -19,7 +19,7 @@ body {
 
 .title-bar {
     display: flex;
-    justify-content: flex-end;
+    justify-content: flex-start;
     align-items: center;
     margin-bottom: 20px;
 }
@@ -41,7 +41,7 @@ h1 {
 }
 
 .search-container {
-    margin-bottom: 12px;
+    margin-bottom: 0;
 }
 
 .search-box {
@@ -63,9 +63,9 @@ h1 {
 
 .action-container {
     display: flex;
-    justify-content: flex-end;
+    justify-content: flex-start;
     gap: 10px;
-    margin-top: 10px;
+    margin-bottom: 12px;
 }
 
 .empty-state {
