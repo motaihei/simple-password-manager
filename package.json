@@ -1,7 +1,7 @@
 {
   "name": "simple-password-manager",
   "version": "1.0.0",
-  "description": "シンプルなパスワード管理アプリです",
+  "description": "シンプルなパスワード管理アプリケーション",
   "main": "main.js",
   "scripts": {
     "start": "electron-forge start",

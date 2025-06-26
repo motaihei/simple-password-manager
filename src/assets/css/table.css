@@ -13,7 +13,7 @@ table {
 }
 
 /* 各列の幅調整 - 固定幅でコンパクトな設計 */
-th:nth-child(1), td:nth-child(1) { width: auto; min-width: 150px; } /* エントリ - 残り幅 */
+th:nth-child(1), td:nth-child(1) { width: auto; min-width: 150px; padding-left: 0; padding-right: 6px; } /* エントリ - 残り幅、左張り付き */
 th:nth-child(2), td:nth-child(2) { width: auto; min-width: 120px; max-width: 150px; } /* ユーザー名 - 残り幅 */
 th:nth-child(3), td:nth-child(3) { width: 75px; } /* パスワード - 固定幅 */
 th:nth-child(4), td:nth-child(4) { width: 100px; } /* URL - 固定幅 */
@@ -32,6 +32,11 @@ td {
     border-bottom: 1px solid #ddd;
     font-size: 13px;
     vertical-align: middle;
+}
+
+/* エントリ列のヘッダとセル内容を中央寄せ */
+th:nth-child(1), td:nth-child(1) {
+    text-align: center;
 }
 
 /* ユーザー名列の特別スタイル */
