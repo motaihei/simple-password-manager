@@ -14,6 +14,7 @@ class PasswordManagerApp {
         
         // DOM要素の取得
         this.searchBox = document.getElementById('searchBox');
+        this.searchClearBtn = document.getElementById('searchClearBtn');
         this.addBtn = document.getElementById('addBtn');
         this.settingsBtn = document.getElementById('settingsBtn');
         this.windowResetBtn = document.getElementById('windowResetBtn');
@@ -83,6 +84,9 @@ class PasswordManagerApp {
         
         // 保存場所変更ボタン
         this.changeStoragePathBtn.addEventListener('click', () => this.handleChangeStoragePath());
+        
+        // 検索クリアボタン
+        this.searchClearBtn.addEventListener('click', () => this.handleSearchClear());
     }
     
     async handleFormSubmit(e) {
@@ -270,6 +274,11 @@ class PasswordManagerApp {
             console.error('保存場所の変更に失敗しました:', error);
             alert('保存場所の変更に失敗しました。');
         }
+    }
+    
+    handleSearchClear() {
+        this.searchBox.value = '';
+        this.searchManager.clearSearch();
     }
 }
 

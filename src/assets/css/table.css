@@ -1,17 +1,67 @@
 /* テーブル関連スタイル */
+#passwordTableContainer {
+    position: relative;
+    height: calc(100vh - 160px);
+    overflow-y: auto;
+    padding-right: 8px; /* スクロールバー分の余白確保 */
+}
+
 table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 20px;
+    table-layout: fixed;
+}
+
+/* 各列の幅調整 - 固定幅でコンパクトな設計 */
+th:nth-child(1), td:nth-child(1) { width: auto; min-width: 150px; } /* エントリ - 残り幅 */
+th:nth-child(2), td:nth-child(2) { width: auto; min-width: 120px; max-width: 150px; } /* ユーザー名 - 残り幅 */
+th:nth-child(3), td:nth-child(3) { width: 75px; } /* パスワード - 固定幅 */
+th:nth-child(4), td:nth-child(4) { width: 100px; } /* URL - 固定幅 */
+th:nth-child(5), td:nth-child(5) { width: 80px; } /* 更新日 - 固定幅（スクロールバー対応） */
+
+thead {
+    position: sticky;
+    top: 0;
+    z-index: 10;
 }
 
 th,
 td {
-    padding: 8px 6px;
+    padding: 4px 6px;
     text-align: center;
     border-bottom: 1px solid #ddd;
     font-size: 13px;
     vertical-align: middle;
+}
+
+/* ユーザー名列の特別スタイル */
+th:nth-child(2),
+td:nth-child(2) {
+    word-break: break-all;
+    text-align: left;
+    padding: 4px 10px;
+}
+
+/* ユーザー名セルの内容 */
+td:nth-child(2) {
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    position: relative;
+    cursor: pointer;
+}
+
+/* ユーザー名ホバー時の完全表示 */
+td:nth-child(2):hover {
+    overflow: visible;
+    white-space: normal;
+    word-break: break-all;
+    background-color: #f8f9fa;
+    z-index: 100;
+    position: relative;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    border-radius: 4px;
 }
 
 th {
@@ -19,11 +69,12 @@ th {
     font-weight: 600;
     color: #495057;
     text-align: center;
-    padding: 10px 6px;
+    padding: 6px 6px;
+    border-bottom: 2px solid #ddd;
 }
 
 td {
-    height: 48px;
+    height: 36px;
 }
 
 tr:hover {
@@ -41,10 +92,10 @@ tr:hover {
 .btn-table-action {
     flex-shrink: 0;
     min-width: 80px;
-    padding: 6px 12px;
+    padding: 4px 12px;
     font-size: 13px;
     font-weight: 500;
-    height: 32px;
+    height: 28px;
     display: flex;
     align-items: center;
     justify-content: center;

@@ -14,18 +14,30 @@ function escapeHtml(text) {
 /**
  * 日時フォーマット
  * @param {string} dateString - フォーマットする日時文字列
+ * @param {boolean} includeTime - 時刻を含めるかどうか（デフォルト: false）
  * @returns {string} フォーマットされた日時
  */
-function formatDateTime(dateString) {
+function formatDateTime(dateString, includeTime = false) {
     if (!dateString) return '不明';
     
     const date = new Date(dateString);
     
-    return date.toLocaleDateString('ja-JP', {
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit'
-    });
+    if (includeTime) {
+        return date.toLocaleString('ja-JP', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit'
+        });
+    } else {
+        return date.toLocaleDateString('ja-JP', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit'
+        });
+    }
 }
 
 /**

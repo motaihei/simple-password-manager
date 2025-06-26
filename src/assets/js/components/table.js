@@ -21,6 +21,21 @@ class TableManager {
         this.render();
     }
     
+    // ユーザー名の表示用処理（30文字制限）
+    formatUsername(username) {
+        // 半角英数字以外の文字を含む場合は制限なし
+        if (!/^[a-zA-Z0-9]*$/.test(username)) {
+            return escapeHtml(username);
+        }
+        
+        // 半角英数字のみで30文字を超える場合は省略
+        if (username.length > 30) {
+            return escapeHtml(username.substring(0, 30)) + '...';
+        }
+        
+        return escapeHtml(username);
+    }
+    
     render() {
         const searchTerm = this.searchBox.value.toLowerCase();
         let filteredPasswords = this.passwords.filter(p => 
@@ -51,7 +66,7 @@ class TableManager {
         this.passwordList.innerHTML = filteredPasswords.map(password => `
             <tr style="cursor: pointer;" data-id="${password.id}">
                 <td>${escapeHtml(password.entryName)}</td>
-                <td>${escapeHtml(password.username)}</td>
+                <td title="${escapeHtml(password.username)}">${this.formatUsername(password.username)}</td>
                 <td>
                     <div class="password-cell">
                         <button class="btn btn-secondary btn-sm btn-table-action copy-password-btn" data-action="copy" data-id="${password.id}">📋 コピー</button>

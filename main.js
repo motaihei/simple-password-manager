@@ -9,7 +9,7 @@ const createWindow = () => {
   const isDev = !app.isPackaged;
   const windowConfig = {
     width: isDev ? 1200 : 600,  // 開発時は横幅を倍に
-    height: 1067,
+    height: 1400,  // 9:21の縦横比 (600 * 21 / 9 = 1400)
     minWidth: 480,
     minHeight: 600,
     icon: path.join(__dirname, 'assets', 'icons', 'icon.ico'), // Windowsアイコン
@@ -164,11 +164,11 @@ ipcMain.handle('reset-window-size', async () => {
       if (mainWindow.isMaximized()) {
         mainWindow.unmaximize();
       }
-      // 標準サイズ（600x1067）にリセット
-      mainWindow.setSize(600, 1067);
+      // 標準サイズ（600x1400）にリセット
+      mainWindow.setSize(600, 1400);
       // ウィンドウを画面中央に移動
       mainWindow.center();
-      console.log('ウィンドウサイズを標準サイズ（600x1067）にリセットし、最大化を解除しました');
+      console.log('ウィンドウサイズを標準サイズ（600x1400）にリセットし、最大化を解除しました');
       return { success: true };
     } else {
       console.error('メインウィンドウが見つかりません');

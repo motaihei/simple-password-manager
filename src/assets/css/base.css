@@ -19,9 +19,13 @@ body {
 
 .title-bar {
     display: flex;
-    justify-content: flex-start;
+    justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
+}
+
+.add-btn-right {
+    margin-left: auto;
 }
 
 h1 {
@@ -42,11 +46,12 @@ h1 {
 
 .search-container {
     margin-bottom: 0;
+    position: relative;
 }
 
 .search-box {
     width: 100%;
-    padding: 10px 14px;
+    padding: 10px 40px 10px 14px;
     border: 1px solid #ddd;
     border-radius: 6px;
     font-size: 14px;
@@ -76,4 +81,35 @@ h1 {
 
 .hidden {
     display: none;
+}
+
+/* カスタムスクロールバー */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 4px;
+    transition: background 0.2s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}
+
+::-webkit-scrollbar-corner {
+    background: #f1f1f1;
+}
+
+/* Firefoxサポート */
+html {
+    scrollbar-width: thin;
+    scrollbar-color: #c1c1c1 #f1f1f1;
 }

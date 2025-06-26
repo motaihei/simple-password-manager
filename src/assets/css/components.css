@@ -2,7 +2,8 @@
 
 /* ボタン */
 .theme-toggle,
-.settings-toggle {
+.settings-toggle,
+.window-reset-toggle {
     background: none;
     border: 1px solid #ddd;
     border-radius: 6px;
@@ -13,7 +14,8 @@
 }
 
 .theme-toggle:hover,
-.settings-toggle:hover {
+.settings-toggle:hover,
+.window-reset-toggle:hover {
     background-color: #f0f0f0;
     border-color: #bbb;
 }
@@ -142,6 +144,36 @@
     border: 1px solid #ddd;
     border-radius: 3px;
     font-size: 13px;
+}
+
+/* 検索クリアボタン */
+.search-clear-btn {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    font-size: 18px;
+    font-weight: bold;
+    color: #999;
+    cursor: pointer;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.2s;
+}
+
+.search-clear-btn:hover {
+    background-color: #f0f0f0;
+    color: #666;
+}
+
+.search-clear-btn:active {
+    background-color: #e0e0e0;
 }
 
 /* 設定モーダル用 */
