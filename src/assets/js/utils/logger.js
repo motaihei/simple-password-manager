@@ -9,11 +9,11 @@ export class Logger {
 
     constructor(component = 'App') {
         this.component = component;
-        this.logLevel = this.LOG_LEVELS.ERROR; // 本番環境では ERROR のみ
+        this.logLevel = Logger.LOG_LEVELS.ERROR; // 本番環境では ERROR のみ
     }
 
     error(message, error = null) {
-        if (this.logLevel >= this.LOG_LEVELS.ERROR) {
+        if (this.logLevel >= Logger.LOG_LEVELS.ERROR) {
             const timestamp = new Date().toISOString();
             const logMessage = `[${timestamp}] [${this.component}] ERROR: ${message}`;
             
@@ -26,21 +26,21 @@ export class Logger {
     }
 
     warn(message) {
-        if (this.logLevel >= this.LOG_LEVELS.WARN) {
+        if (this.logLevel >= Logger.LOG_LEVELS.WARN) {
             const timestamp = new Date().toISOString();
             console.warn(`[${timestamp}] [${this.component}] WARN: ${message}`);
         }
     }
 
     info(message) {
-        if (this.logLevel >= this.LOG_LEVELS.INFO) {
+        if (this.logLevel >= Logger.LOG_LEVELS.INFO) {
             const timestamp = new Date().toISOString();
             console.info(`[${timestamp}] [${this.component}] INFO: ${message}`);
         }
     }
 
     debug(message) {
-        if (this.logLevel >= this.LOG_LEVELS.DEBUG) {
+        if (this.logLevel >= Logger.LOG_LEVELS.DEBUG) {
             const timestamp = new Date().toISOString();
             console.debug(`[${timestamp}] [${this.component}] DEBUG: ${message}`);
         }

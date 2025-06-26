@@ -1,7 +1,7 @@
 {
-  "name": "20250625_0152",
+  "name": "simple-password-manager",
   "version": "1.0.0",
-  "description": "作成日：2025-06-25 01:52",
+  "description": "シンプルなパスワード管理アプリです",
   "main": "main.js",
   "scripts": {
     "start": "electron-forge start",
