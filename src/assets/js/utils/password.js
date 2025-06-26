@@ -1,4 +1,7 @@
 // パスワード生成・管理ユーティリティ
+import { Logger } from './logger.js';
+
+const logger = new Logger('PasswordUtils');
 
 /**
  * パスワード生成
@@ -50,7 +53,7 @@ async function copyPassword(id, buttonElement, passwords) {
             buttonElement.textContent = originalText;
         }, 1000);
     } catch (error) {
-        console.error('クリップボードにコピーできませんでした:', error);
+        logger.error('クリップボードコピーエラー', error);
         // エラー時のフィードバック
         const originalText = buttonElement.textContent;
         buttonElement.textContent = '×';

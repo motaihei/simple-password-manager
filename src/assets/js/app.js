@@ -6,11 +6,13 @@ import { SearchManager } from './components/search.js';
 import { copyPassword } from './utils/password.js';
 import { savePasswords, loadPasswords, openPasswordFolder } from './utils/storage.js';
 import { formatDateTime } from './utils/dom.js';
+import { Logger } from './utils/logger.js';
 
 class PasswordManagerApp {
     constructor() {
         this.passwords = [];
         this.editingId = null;
+        this.logger = new Logger('PasswordManagerApp');
         
         // DOM要素の取得
         this.searchBox = document.getElementById('searchBox');
@@ -52,7 +54,7 @@ class PasswordManagerApp {
                 this.currentStoragePath.textContent = settings.storageLocation;
             }
         } catch (error) {
-            console.error('設定の読み込みに失敗しました:', error);
+            this.logger.error('設定の読み込みに失敗しました', error);
         }
     }
     
@@ -242,7 +244,7 @@ class PasswordManagerApp {
             try {
                 await window.electronAPI.openUrl(password.url);
             } catch (error) {
-                console.error('Error opening URL:', error);
+                this.logger.error('URL 開封エラー', error);
             }
         }
     }
@@ -255,9 +257,9 @@ class PasswordManagerApp {
     async handleWindowReset() {
         try {
             await window.electronAPI.resetWindowSize();
-            console.log('ウィンドウサイズをリセットしました');
+            // ウィンドウサイズリセット成功（無音処理）
         } catch (error) {
-            console.error('ウィンドウサイズのリセットに失敗しました:', error);
+            this.logger.error('ウィンドウサイズのリセットに失敗しました', error);
         }
     }
     
@@ -290,7 +292,7 @@ class PasswordManagerApp {
                 alert('フォルダーの選択に失敗しました: ' + result.error);
             }
         } catch (error) {
-            console.error('保存場所の変更に失敗しました:', error);
+            this.logger.error('保存場所の変更に失敗しました', error);
             alert('保存場所の変更に失敗しました。');
         }
     }
@@ -348,7 +350,7 @@ class PasswordManagerApp {
                 this.searchBox.focus();
             }
         } catch (error) {
-            console.error('クリップボードからの貼り付けに失敗しました:', error);
+            this.logger.error('クリップボードからの貼り付けに失敗しました', error);
         }
         
         // コンテキストメニューを隠す

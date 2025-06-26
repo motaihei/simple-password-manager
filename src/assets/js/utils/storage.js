@@ -1,4 +1,7 @@
 // データ保存・読み込みユーティリティ
+import { Logger } from './logger.js';
+
+const logger = new Logger('StorageUtils');
 
 /**
  * パスワードデータの保存
@@ -23,7 +26,7 @@ async function openPasswordFolder() {
     try {
         await window.electronAPI.openPasswordFolder();
     } catch (error) {
-        console.error('Error opening folder:', error);
+        logger.error('フォルダー開封エラー', error);
     }
 }
 
